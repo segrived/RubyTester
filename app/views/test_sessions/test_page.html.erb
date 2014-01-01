@@ -1,0 +1,27 @@
+<section id="content">
+  <div class="center-box">
+    <% @question_statuses.each.with_index do |q, i| %>
+      <% question = q.question %>
+      <div class="answer-area" style="margin-bottom: 25px;">
+        <% f_path = check_question_path(@a.test_session) %>
+        <%= form_tag f_path, method: 'post', remote: true, class: 'answer-form', id: "question-#{i}" do %>
+          <div class="test-question-text">
+            <%= simple_format(question.text) %>
+          </div>
+          <div class="answer-data">
+            <%= hidden_field_tag :question_status_id, q.id %>
+            <%= hidden_field_tag :question_id, question.id %>
+            <%= render partial: "test_sessions/question_partials/#{question.type}", locals: {question: question} %>
+          </div>
+          <div class="answer-submit-block">
+            <%= submit_tag "Подтвердить ответ" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<aside style="position: fixed;">
+  <%= render partial: 'sidebar' %>
+</aside>

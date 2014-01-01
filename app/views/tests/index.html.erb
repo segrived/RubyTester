@@ -1,0 +1,12 @@
+<section id="content">
+  <h1>Выберите теcт для редактирования</h1>
+  <div id="test-items">
+    <%= render partial: 'test', collection: @tests %>
+  </div>
+  <%= will_paginate(@tests) %>
+  <%= link_to "Создать новый тест", :new_test, class: 'btn' %>
+</section>
+
+<aside>
+  <%= render partial: 'sidebar' %>
+</aside>

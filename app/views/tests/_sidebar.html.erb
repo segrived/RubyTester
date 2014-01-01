@@ -1,0 +1,19 @@
+<!-- Поиск теста -->
+<article>
+  <h1>Поиск</h1>
+  <%= form_tag :tests, method: 'get' do %>
+    <%= text_field_tag :search_request, params[:search_request] %>
+  <% end %>
+</article>
+
+<article>
+  <h1>Фильтр по тегам</h1>
+  <ul class="with-padding">
+    <li><%= link_to 'все записи', :tests %>
+    <% @top_tags.each do |t| %>
+      <li><%= link_to t.first, test_tags_path(t.first) %></li>
+    <% end %>
+    <hr class="compact dashed" />
+    <li><%= link_to "показать все теги", :tests_tags %></li>
+  </ul>
+</article>

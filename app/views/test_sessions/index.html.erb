@@ -1,0 +1,23 @@
+<section id="content-full">
+  <h1>Список всех сессий</h1>
+
+  <% if flash[:notice] %>
+    <div class="message success"><%= flash[:notice] %></div>
+  <% end %>
+
+  <h2>Активные сессии</h2>
+  <ul>
+    <% @sessions.active.each do |session| %>
+      <li><%= session.created_at %></li>
+    <% end %>
+  </ul>
+
+  <h2>Неактивные сессии</h2>
+  <ul>
+    <% @sessions.inactive.each do |session| %>
+      <li><%= session.created_at %> (истекла <%= session.end_time %>)</li>
+    <% end %>
+    <%= link_to 'Удалить неактивные сессии', inactive_test_sessions_path(@test),
+      method: 'delete', class: 'btn' %>
+  </ul>
+</section>

@@ -1,0 +1,24 @@
+<section id="content-full">
+  <div class="center-box width-500px">
+
+    <% if flash[:alert] %>
+      <div class="message error"><%= flash[:alert] %></div>
+    <% end %>
+
+    <%= form_tag :login, method: 'post' do %>
+      <fieldset>
+        <legend>Вход в систему</legend>
+        <div class="field">
+          <%= label :login, "Логин" %>
+          <%= text_field_tag :login %>
+        </div>
+        <div class="field">
+          <%= label :password, "Пароль" %>
+          <%= password_field_tag :password %>
+        </div>
+        <%= submit_tag "Войти в систему" %>
+      </fieldset>
+    <% end %>
+
+  </div>
+</section>

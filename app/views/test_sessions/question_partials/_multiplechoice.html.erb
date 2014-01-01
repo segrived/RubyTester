@@ -1,0 +1,7 @@
+<% question.variants.sort_by {rand}.each_with_index do |(k, v), i| %>
+  <% idf = "a-#{question.id}-#{i}" %>
+  <div class="field inline <%= 'last' if i+1 == question.variants.length %>">
+    <%= check_box_tag 'answer[]', k, false, {id: idf} %>
+    <%= label_tag idf, v %>
+  </div>
+<% end %>

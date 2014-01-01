@@ -1,0 +1,62 @@
+.clearfix {
+  zoom: 1;
+  &:before, &:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+// width classes generator
+@for $i from 1 through 10 {
+  .width-#{$i * 10}p {
+    width: $i * 10% !important;
+  }
+}
+
+// width classes generator
+@for $i from 1 through 10 {
+  .width-#{$i * 100}px {
+    width: $i * 100px !important;
+  }
+}
+
+.center-box {
+  margin: 0 auto;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.width-auto {
+  width: auto !important;
+}
+
+.red { color: red; }
+.green { color: green; }
+.blue { color: blue; }

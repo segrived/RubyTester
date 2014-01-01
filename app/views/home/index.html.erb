@@ -1,0 +1,22 @@
+<section id="content-full">
+  <table>
+    <tr>
+      <th>Название теста</th>
+      <th>Описание</th>
+      <th>Осталось</th>
+      <th>Для группы</th>
+    </tr>
+    <% @active_sessions.each do |s| %>
+      <tr>
+        <td><%= link_to s.test.title, session_register_path(s) %></td>
+        <td><%= s.description | "отсутствует" %></td>
+        <td><% if s.end_time.nil? %>
+          неограничено
+        <% else %>
+          <%= distance_of_time_in_words(s.remains_in_sec) %>
+        <% end %></td>
+        <td><%= s.group ? s.group.name : "неопределено" %></td>
+      </tr>
+    <% end %>
+  </table>
+</section>

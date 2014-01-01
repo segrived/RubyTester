@@ -1,0 +1,61 @@
+<section id="content">
+  <h1>Создание аккаунта пользователя системы</h1>
+  <% if @user.errors.any? %>
+    <div class="message error">
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="width-50p center-box">
+    <%= form_for [:admin, @user] do |f| %>
+      <fieldset class="no-border">
+        <div class="field">
+          <%= f.label :login, "Логин" %>
+          <%= f.text_field :login %>
+        </div>
+        <div class="field">
+          <%= f.label :password, "Пароль" %>
+          <%= f.text_field :password %>
+        </div>
+        <div class="field">
+          <fieldset class="inline-labels">
+            <legend>Права доступа</legend>
+            <%= fields_for 'user[permissions_hash]' do |p| %>
+              <div class="field">
+                <% canLoginDef = @user.new_record? ? true : @user.can?("login") %>
+                <%= p.check_box :canLogin, checked: canLoginDef %>
+                <%= p.label :canLogin, "Может входить в систему" %>
+              </div>
+              <div class="field">
+                <%= p.check_box :canAdmin, checked: @user.can?("admin") %>
+                <%= p.label :canAdmin, "Может администрировать систему" %>
+              </div>
+              <div class="field">
+                <%= p.check_box :canManageTests, checked: @user.can?("manageTests") %>
+                <%= p.label :canManageTests, "Может создавать и редактировать тесты" %>
+              </div>
+              <div class="field">
+                <%= p.check_box :canUseTests, checked: @user.can?("useTests") %>
+                <%= p.label :canUseTests, "Может тестировать студентов" %>
+              </div>
+              <div class="field">
+                <%= p.check_box :canBrowseReports, checked: @user.can?("browseReports") %>
+                <%= p.label :canBrowseReports, "Может просматривать все отчеты" %>
+              </div>
+              <div class="field last">
+                <%= p.check_box :canManageStudents, checked: @user.can?("manageStudents") %>
+                <%= p.label :canManageStudents, "Может управлять группами и студентами" %>
+              </div>
+            <% end %>
+          </fieldset>
+        </div>
+        <%= f.submit "Создать пользователя" %>
+      </fieldset>
+    <% end %>
+  </div>
+</section>
+
+<%= render partial: 'admin/sidebar' %>

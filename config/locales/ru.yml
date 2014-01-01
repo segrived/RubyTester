@@ -1,0 +1,19 @@
+ru:
+  mongoid:
+    models:
+      group: Группа
+    attributes:
+      group:
+        name: Название
+
+  will_paginate:
+    previous_label: ←
+    next_label: →
+
+  userPermissions:
+    canLogin: может входить в систему
+    canAdmin: может администировать систему
+    canManageTests: может управлять тестами
+    canUseTests: может использовать тесты для тестирования пользователей
+    canBrowseReports: может просматривать все отчеты
+    canManageStudents: может управлять группами и студентами

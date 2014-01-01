@@ -1,0 +1,22 @@
+<script type="text/javascript">
+  window.session_data = <%= @session.to_json.html_safe %>
+</script>
+
+<section id="content-full">
+  <h1>Наблюдение за прохождением теста</h1>
+  <p>Тест: <b><%= @session.test.title %></b></p>
+  <p>Количество вопросов: <b><%= @session.questions_count %></b></p>
+  <table id="session-student-status-list">
+    <tr>
+      <th style="width: 70%;">Полное имя</th>
+      <th style="width: 30%;">Статус</th>
+    </tr>
+    <% @session.group.students.each do |student| %>
+      <tr class="test-session-student-item" id="student-<%= student.id %>">
+        <td><%= link_to student.fullname, session_report_path(@session, student.id) %></td>
+        <td class="status">Пользователь не проходил этот тест</td>
+      </tr>
+    <% end %>
+  </table>
+  <button id="update-information" data-session-id="<%= @session.id %>">Обновить информацию</button>
+</section>

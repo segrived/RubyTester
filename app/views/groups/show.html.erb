@@ -1,0 +1,22 @@
+<div id="content-container-wo-sidebar">
+  <div id="content">
+    <h3>Список студентов группы «<%= @group.name %>»</h3>
+    <hr class="compact" />
+    <table>
+      <% @students.each do |s| %>
+        <tr>
+          <td><%= s.fullname %></td>
+          <td><%= link_to "[x]", [@group, s], method: 'delete', confirm: 'Вы уверены, что хотите удалить этого пользователя? Данное действие нельзя будет отменить.' %></td>
+        </tr>
+      <% end %>
+    </table>
+    <%= form_for [@group, @student], method: 'post' do |f| %>
+      <fieldset>
+        <legend>Добавление студента в группу</legend>
+        <%= f.label "Ф.И.О. " %>
+        <%= f.text_field :fullname %>
+        <%= f.submit "Добавить" %>
+      </fieldset>
+    <% end %>
+  </div>
+</div>

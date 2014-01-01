@@ -1,0 +1,17 @@
+<section id="content">
+  <h1>Профиль пользователя <%= @user.login %></h1>
+  <h2>Установленные разрешения</h2>
+  <div class="p-box">
+    <% @user.permissions.each do |p| %>
+      <li><%= t("userPermissions.#{p}") %></li>
+    <% end %>
+  </div>
+  <h2>Последние действия</h2>
+  <div class="p-box">
+    <% @user.permissions.each do |p| %>
+      <li><%= t("userPermissions.#{p}") %></li>
+    <% end %>
+  </div>
+</section>
+
+<%= render partial: 'admin/sidebar' %>

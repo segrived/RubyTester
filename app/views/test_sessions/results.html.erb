@@ -1,0 +1,12 @@
+<section id="content-full">
+  <h1>Результаты прохождения теста</h1>
+  <div style="margin: 0 auto; text-align: center;">
+    <div style="font-size: 120px; color: green;"><%= @assignment.valid_percent %>%</div>
+    <% if (points = @assignment.test_session.max_points) > 0 %>
+      <div style="font-size: 70px; color: blue;">
+        В баллах: <%= (points * @assignment.valid_percent / 100).round %>
+      </div>
+    <% end %>
+    <%= link_to "Завершить тест", :end, class: 'btn' %>
+  </div>
+</section>

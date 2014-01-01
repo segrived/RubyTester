@@ -1,0 +1,16 @@
+<section id="content">
+  <h1>Обслуживание системы</h1>
+  <% if flash[:notice] %>
+    <div class="message success"><%= flash[:notice] %></div>
+  <% end %>
+  <article>
+    <h2>Индекс тегов</h2>
+    <p>В данный момент проиндексировано <b><%= Test.tags.count %></b> тегов.
+      Если теги отображаются неправильно, либо некоторые теги отсутсвуют в списке — 
+      попробуйте перестроить список тегов</p>
+    <%= button_to 'Перестроить индекс тегов', :admin_maintenance_rebuild_tag_index,
+      class: 'width-auto' %>
+  </article>
+</section>
+
+<%= render partial: 'admin/sidebar' %>

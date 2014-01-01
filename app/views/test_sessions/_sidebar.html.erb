@@ -1,0 +1,22 @@
+<h1>Информация о тесте</h1>
+<p>Вы: <b><%= @a.student %></b></p>
+<p>Вы проходите тест: <b><%= @a.test_session.test.title %></b></p>
+<p>
+  <b> времени: </b>
+  <span id="total-time" data-total-sec="<%= @a.test_session.time_per_student * 60 %>"></span>
+  <div id="progress-bar">
+    <span id="remains-time-text" data-remains-sec="<%= @a.remains_in_sec %>">
+      Осталось: <span id="remains-time-text-inner"></span>
+    </span>
+    <div id="remains-progress"></div>
+  </div>
+</p>
+<p>
+  <b>Отвечено: </b>
+  <span id="answered-count">
+    <%= @a.answered_count %>
+  </span> / 
+  <span id="total-count">
+    <%= @a.test_session.questions_count %>
+  </span>
+</p>

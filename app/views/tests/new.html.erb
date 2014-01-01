@@ -1,0 +1,27 @@
+<section id="content-full">
+  <div id="create-test-form" class="width-50p center-box">
+    <%= form_for @test do |f| %>
+      <fieldset>
+        <legend>Добавление нового теста</legend>
+        <div class="field">
+          <%= f.label "Название теста" %>
+          <%= f.text_field :title %>
+        </div>
+        <div class="field">
+          <%= f.label "Описание теста" %>
+          <%= f.text_area :description, rows: 4 %>
+        </div>
+        <div class="field">
+          <%= f.label "Теги (через запятую, для упрощения поиска)" %>
+          <%= f.text_field :tags %>
+          <div id="tag-list">
+            <% @top_tags.each do |tag| %>
+              <span class="tag"><%= tag.first %></span>
+            <% end %>
+          </div>
+        </div>
+        <%= f.submit 'Создать новый тест' %>
+      </fieldset>
+    <% end %>
+  </div>
+</section>

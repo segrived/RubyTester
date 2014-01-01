@@ -1,0 +1,31 @@
+development: &defaults
+  sessions:
+    default: &default_session
+      database: rt_dev
+      hosts:
+        - localhost:27017
+      options:
+        safe: false
+  options:
+    allow_dynamic_fields: false
+    identity_map_enabled: true
+    include_root_in_json: false
+    include_type_for_serialization: false
+    preload_models: true
+    use_activesupport_time_zone: true
+    # protect_sensitive_fields: true
+    # use_utc: false
+
+production:
+  <<: *defaults
+  sessions:
+    default:
+      <<: *default_session
+      database: rubytester
+
+test:
+  <<: *defaults
+  sessions:
+    default:
+      <<: *default_session
+      database: rt_dev

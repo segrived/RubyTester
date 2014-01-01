@@ -1,0 +1,10 @@
+<table>
+  <tr>
+    <th>ФИО студента</th>
+  </tr>
+  <% @session.group.students.each do |student| %>
+    <tr>
+      <td><%= link_to student.fullname, assign_student_path(@session, student.id), method: 'post' %></td>
+    </tr>
+  <% end %>
+</table>

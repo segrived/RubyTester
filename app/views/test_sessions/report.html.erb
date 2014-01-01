@@ -1,0 +1,43 @@
+<section id="content-full">
+  <h1>Статус прохождения теста</h1>
+  <% if @assignment.nil? %>
+    <div class="message error">Нет данных про данного студента. Возможно данный студент ещё не начал прохождение теста</div>
+  <% else %>
+    <h2>Информация о прохождении</h2>
+    <p><b>Студент:</b> <%= @assignment.student.fullname %></p>
+    <p><b>Тест:</b> <%= @assignment.test_session.test.title %></p>
+    <p><b>Приватный ключ:</b> <%= @assignment.private_key %></p>
+    <p><b>Статус прохождения:</b> <%= @assignment.completed? ? 'завершен' : 'не завершен' %></p>
+    <p><b>Статус теста:</b> <%= @assignment.active? ? 'активен' : 'неактивен' %></p>
+    <hr />
+
+    <h2>Статистика</h2>
+    <p><b>Правильность ответов:</b> <%= @assignment.valid_percent %>%</p>
+    <hr />
+
+    <h2>Статистика по вопросам</h2>
+    <% @assignment.question_statuses.each do |qs| %>
+      <li>
+        <p><b>Текст вопроса:</b> <%= @questions.find {|q| q.id == qs.question_id}.text %></p>
+        <% if qs.is_answered %>
+          <% if qs.is_valid_answer %>
+            <p class="green">Был дан верный ответ</p>
+          <% else %>
+            <p class="red">Был дан неверный ответ</p>
+          <% end %>
+        <% else %>
+          <p>Да данный вопрос ещё нет ответа</p>
+        <% end %>
+      </li>
+    <% end %>
+    <hr />
+
+    <h2>Информация о тесте</h2>
+    <p><b>Всего вопросов в тесте:</b> <%= @assignment.test_session.test.questions.count %></p>
+    <p><b>Теги:</b> <%= @assignment.test_session.test.tags_str %></p>
+    <p><b>Создан:</b> <%= @assignment.test_session.test.created_at %></p>
+  <% end %>
+
+  <%= link_to "назад к списку студентов", session_watch_path(params[:id]), class: 'btn' %>
+  <%= link_to "Отчет в формате PDF", session_report_path(params[:id], params[:student_id], format: :pdf), class: 'btn' %>
+</section>
