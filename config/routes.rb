@@ -6,6 +6,9 @@ RubyTester::Application.routes.draw do
     resources :sessions, controller: :test_sessions, only: [:new, :create, :destroy, :index] do
       delete 'inactive', action: 'destroy_inactive', on: :collection
     end
+    collection do
+      get 'archived'
+    end
     member do
       post 'archive'
       scope 'tags' do
@@ -30,7 +33,6 @@ RubyTester::Application.routes.draw do
   end
 
   resources :reports
-  
   resources :groups do
     resources :students
   end

@@ -10,28 +10,34 @@
     </span>
   </div>
   <div class="info right">
-    <span class="show-active-sessions link dashed">
-      <% active_sessions = test.test_sessions.active.to_a %>
-      <% if active_sessions.count > 0 %>
-        активных сессий: <b><%= active_sessions.count %></b>
-      <% else %>
-        нет активных сессий
-      <% end %>
-    </span> |
-    <%= link_to 'запустить', new_test_session_path(test) %> |
-    <%= link_to 'архивировать', archive_test_path(test), method: 'post' %> | 
+    <% if test.is_archived %>
+      <%= link_to "разархивировать", archive_test_path(test, set_state: false), method: 'post' %> |
+    <% else %>
+      <span class="show-active-sessions link dashed">
+        <% active_sessions = test.test_sessions.active.to_a %>
+        <% if active_sessions.count > 0 %>
+          активных сессий: <b><%= active_sessions.count %></b>
+        <% else %>
+          нет активных сессий
+        <% end %>
+      </span> |
+      <%= link_to 'запустить', new_test_session_path(test) %> |
+      <%= link_to 'архивировать', archive_test_path(test, set_state: true), method: 'post' %> | 
+    <% end %>
     <%= link_to 'удалить', test_path(test), method: 'delete',
       confirm: 'Вы действительно хотите удалить этот тест?<hr/><b>ВНИМАНИЕ! С тестом также будут удалены все связанные с ним вопросы и сессии. Удалять тест крайне не рекомендуется. Если есть возможность - тест лучше оставить в заархивированном виде. Если тест все таки будет удален, рекомендуется сначала сгенерировать отчеты, связанные с этим тестом, так как восстановить данные будет невозможно.</b>', class: 'red' %>
   </div>
-  <div class="clearfix"></div>
-  <ul class="test-session-list hidden">
-    <% active_sessions.each do |session| %>
-      <li>
-        Время создания сессии: 
-        <%= link_to session.created_at, session_watch_path(session) %>
-        <%= link_to "[x]", test_session_path(test, session), method: 'delete' %>
-      </li>
-    <% end %>
-    <div><%= link_to "Показать все сессии, включая неактивные", test_sessions_path(test) %></div>
-  </ul>
+  <% unless test.is_archived %>
+    <div class="clearfix"></div>
+    <ul class="test-session-list hidden">
+      <% active_sessions.each do |session| %>
+        <li>
+          Время создания сессии: 
+          <%= link_to session.created_at, session_watch_path(session) %>
+          <%= link_to "[x]", test_session_path(test, session), method: 'delete' %>
+        </li>
+      <% end %>
+      <div><%= link_to "Показать все сессии, включая неактивные", test_sessions_path(test) %></div>
+    </ul>
+  <% end %>
 </div>

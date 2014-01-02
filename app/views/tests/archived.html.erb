@@ -1,0 +1,7 @@
+<section id="content-full">
+  <h1>Список заархивированных тестов</h1>
+  <div id="test-items">
+    <%= render partial: 'test', collection: @tests %>
+  </div>
+  <%= link_to "Назад к списку тестов", :tests, class: 'btn' %>
+</section>

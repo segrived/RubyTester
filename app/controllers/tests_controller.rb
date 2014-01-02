@@ -6,7 +6,9 @@ class TestsController < ApplicationController
 
   respond_to :html, :json
 
+  # GET /tests
   def index
+    # По умолчанию отображаются только неархивные записи
     @tests = Test.unarchived
     # поиск по запросу
     if params.has_key? :search_request
@@ -19,10 +21,12 @@ class TestsController < ApplicationController
     @tests = @tests.paginate(page: params[:page], per_page: 10)
   end
 
+  # GET /tests/new
   def new
     @test = Test.new
   end
   
+  # POST /tests
   def create
     @test = Test.new(params[:test])
     if @test.save then
@@ -32,52 +36,39 @@ class TestsController < ApplicationController
     render :new
   end
 
+  # GET /tests/1/edit
   def edit
     @test = Test.includes(:questions).find(params[:id])
   end
 
+  # PUT /tests/1
   def update
     Rails.cache.delete('top-tags')
   end
 
-  def tags
-    @tags = Test.tags
-    render :tags
-  end
-
-  def add_tag
-    @test = Test.find(params[:id])
-    @test.tags_array.push(params[:tag])
-    @test.tags_array.uniq! # only unique tags
-    if @test.save
-      Rails.cache.delete('top-tags')
-      render json: @test, status: 200
-    else
-      render nothing: true, status: 422
-    end
-  end
-
-  def remove_tag
-    @test = Test.find(params[:id])
-    @test.tags_array.delete(params[:tag])
-    if @test.save
-      Rails.cache.delete('top-tags')
-      render nothing: true, status: 200
-    else
-      render nothing: true, status: 422
-    end
-  end
-
+  # POST /tests/1/archive
   def archive
     @test = Test.find(params[:id])
-    @test.update_attributes({is_archived: true})
+    @test.update_attributes({is_archived: params[:set_state]})
     redirect_to :back
   end
 
+  # GET /tests/archived
+  def archived
+    @tests = Test.archived
+  end
+
+  # DELETE /tests/1
   def destroy
     @test = Test.find(params[:id]).destroy
     Rails.cache.delete('top-tags')
     redirect_to :tests
+  end
+
+  # GET /tests/tags
+  def tags
+    @tags = Test.tags
+    render :tags
   end
 
   private

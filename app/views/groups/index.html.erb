@@ -1,21 +1,6 @@
-<div id="content-container-wo-sidebar">
-  <div id="content">
-    <h3>Список групп</h3>
-    <hr class="compact" />
-    <ul>
-      <% @groups.each do |group| %>
-        <li><%= link_to group.name, group %></li>
-      <% end %>
-    </ul>
+<section id="content">
+  <h1>Список студентов</h1>
+  <p>Выберите группу для отображения списка студентов</p>
+</section>
 
-    <%= form_for @new_group, remote: true do |f| %>
-      <fieldset>
-        <legend>Создание новой группы</legend>
-        <%= f.label "Название: " %>
-        <%= f.text_field :name %>
-        <%= f.submit "Создать группу" %>
-      </fieldset>
-    <% end %>
-    
-  </div>
-</div>
+<%= render partial: 'sidebar' %>

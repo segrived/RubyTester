@@ -1,22 +1,18 @@
-<div id="content-container-wo-sidebar">
-  <div id="content">
-    <h3>Список студентов группы «<%= @group.name %>»</h3>
-    <hr class="compact" />
+<section id="content">
+  <h1>Список студентов группы <%= @group.name %></h1>
+  
+  <% if @group.students.count > 0 %>
     <table>
-      <% @students.each do |s| %>
+      <% @group.students.each do |student| %>
         <tr>
-          <td><%= s.fullname %></td>
-          <td><%= link_to "[x]", [@group, s], method: 'delete', confirm: 'Вы уверены, что хотите удалить этого пользователя? Данное действие нельзя будет отменить.' %></td>
+          <td><%= student.fullname %></td>
         </tr>
       <% end %>
     </table>
-    <%= form_for [@group, @student], method: 'post' do |f| %>
-      <fieldset>
-        <legend>Добавление студента в группу</legend>
-        <%= f.label "Ф.И.О. " %>
-        <%= f.text_field :fullname %>
-        <%= f.submit "Добавить" %>
-      </fieldset>
-    <% end %>
-  </div>
-</div>
+  <% else %>
+    <div class="message info">В данной группе ещё нет студентов</div>
+  <% end %>
+  <%= link_to "Добавить студента в группу", new_group_student_path(@group), class: 'btn' %>
+</section>
+
+<%= render partial: 'sidebar' %>

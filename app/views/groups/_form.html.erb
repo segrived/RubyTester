@@ -1,0 +1,21 @@
+<section id="content">
+  <%= form_for @group do |f| %>
+    <% if @group.errors.any? %>
+      <div class="message error">
+        <ul>
+          <% @group.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <fieldset>
+      <legend>Добавление новой группы</legend>
+      <div class="field">
+        <%= f.label "Название группы (например ПЗ-10-1д)" %>
+        <%= f.text_field :name %>
+      </div>
+      <%= f.submit "Добавить группу" %>
+    </fieldset>
+  <% end %>
+</section>

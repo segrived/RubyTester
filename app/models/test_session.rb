@@ -29,6 +29,7 @@ class TestSession
     presence: true
   validates :session_length, numericality: { greater_than_or_equal_to: 0 }
   validates :time_per_student, numericality: { greater_than: 0 }
+  validate :check_test_archived_state
   
   def remains_in_sec
     return 0 if self.end_time < Time.now || self.end_time.nil?
@@ -46,5 +47,11 @@ class TestSession
 
   def total_questions_count
     test.questions.count
+  end
+
+  def check_test_archived_state
+    if test.is_archived
+      errors.add(:base, "Тест заархивирован, использование его для тестирования недопустимо")
+    end
   end
 end

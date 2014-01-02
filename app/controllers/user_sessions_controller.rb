@@ -2,7 +2,7 @@
 
 class UserSessionsController < ApplicationController
 
-  before_filter :login_required, only: [:profile, :logout]
+  before_filter :login_required, only: [:logout]
 
   def login
     if logged?
