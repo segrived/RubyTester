@@ -1,13 +1,13 @@
+// Third-party components
 @import 'normalize';
 @import 'alertify.core.css';
 @import 'alertify.default.css';
 @import 'highlight.github.css';
 
-@import 'variables';
 @import 'commons';
 
-@import 'forms';
-@import 'tables';
-@import 'messages';
-@import 'layout';
-@import 'paginate';
+@import 'partials/forms';
+@import 'partials/tables';
+@import 'partials/messages';
+@import 'partials/layout';
+@import 'partials/paginate';

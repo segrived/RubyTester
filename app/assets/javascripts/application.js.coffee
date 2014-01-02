@@ -1,13 +1,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require underscore
-//= require notify.min.js
-//= require jquery.scrollTo.min.js
-//= require alertify.min.js
-//= require moment.min.js
-//= require sugar.min.js
 //= require js-routes
-//= require highlight.pack
+//= require vendors
 
 //= require_self
 //= require_tree .
