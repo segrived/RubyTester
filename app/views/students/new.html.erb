@@ -1,14 +1,6 @@
 <section id="content">
   <%= form_for [:group, @student] do |f| %>
-    <% if @student.errors.any? %>
-      <div class="message error">
-        <ul>
-          <% @student.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= f.errors %>
     <fieldset>
       <legend>Добавление студента в группу</legend>
       <div class="field">

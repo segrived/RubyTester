@@ -1,17 +1,9 @@
 <section id="content">
   <h1>Создание аккаунта пользователя системы</h1>
-  <% if @user.errors.any? %>
-    <div class="message error">
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <div class="width-50p center-box">
+  <div class="center-box">
     <%= form_for [:admin, @user] do |f| %>
-      <fieldset class="no-border">
+      <%= f.errors %>
+      <fieldset>
         <div class="field">
           <%= f.label :login, "Логин" %>
           <%= f.text_field :login %>

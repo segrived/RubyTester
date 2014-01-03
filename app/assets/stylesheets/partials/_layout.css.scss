@@ -283,3 +283,9 @@ pre, code {
     width: 0%;
   }
 }
+
+.field_with_errors {
+  input[type="text"], input[type="password"], textarea {
+    border-color: #FF5559;
+  }
+}

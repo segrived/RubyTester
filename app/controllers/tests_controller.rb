@@ -50,7 +50,7 @@ class TestsController < ApplicationController
   def archive
     @test = Test.find(params[:id])
     @test.update_attributes({is_archived: params[:set_state]})
-    redirect_to :back
+    redirect_to :tests, notice: "Состояние теста «#{@test.title}» было изменено"
   end
 
   # GET /tests/archived

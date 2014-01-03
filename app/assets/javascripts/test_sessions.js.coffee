@@ -14,7 +14,6 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
     remains = moment().startOf('day').seconds(r_sec)
     progress_remains = r_sec / total_seconds * 100
     pb_progress.css('width', "#{progress_remains}%")
-
     pb_text.html remains.format('HH:mm:ss')
 
   update_countdown() # init countdown state

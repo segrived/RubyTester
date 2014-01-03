@@ -3,15 +3,7 @@
     <h1>Открытие теста для прохождения</h1>
     <div class="width-500px center-box">
       <%= form_for @test_session do |f| %>
-        <% if @test_session.errors.any? %>
-          <div class="message error">
-            <ul>
-              <% @test_session.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
+        <%= f.errors %>
         <fieldset>
           <legend>Параметры тестирования</legend>
           <div class="field">

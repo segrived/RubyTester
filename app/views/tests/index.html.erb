@@ -1,5 +1,8 @@
 <section id="content">
   <h1>Выберите теcт для редактирования</h1>
+  <% if flash[:notice] %>
+    <div class="message success"><%= flash[:notice] %></div>
+  <% end %>
   <div id="test-items">
     <%= render partial: 'test', collection: @tests %>
   </div>

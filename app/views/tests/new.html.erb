@@ -3,6 +3,7 @@
     <%= form_for @test do |f| %>
       <fieldset>
         <legend>Добавление нового теста</legend>
+        <%= f.errors %>
         <div class="field">
           <%= f.label "Название теста" %>
           <%= f.text_field :title %>

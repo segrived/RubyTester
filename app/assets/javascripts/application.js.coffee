@@ -16,6 +16,9 @@ bind_js = (controller, action) ->
 $(document).on 'ready page:load', ->
   bind_js $('body').data('controller'), $('body').data('action')
 
+  $('.message').on 'click', ->
+    $(@).hide('normal')
+
   alertify.set
     labels: { ok: "Да", cancel : "Отменить" }
     buttonReverse: true

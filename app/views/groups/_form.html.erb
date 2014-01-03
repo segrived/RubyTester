@@ -1,14 +1,6 @@
 <section id="content">
   <%= form_for @group do |f| %>
-    <% if @group.errors.any? %>
-      <div class="message error">
-        <ul>
-          <% @group.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= f.errors %>
     <fieldset>
       <legend>Добавление новой группы</legend>
       <div class="field">
