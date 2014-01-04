@@ -1,40 +1,42 @@
 <% if @test.questions.count > 0 %>
   <section id="content-full">
-    <h1>Открытие теста для прохождения</h1>
-    <div class="width-500px center-box">
+    <h1>Параметры тестирования</h1>
+    <div class="center-box">
       <%= form_for @test_session do |f| %>
         <%= f.errors %>
         <fieldset>
-          <legend>Параметры тестирования</legend>
-          <div class="field">
-            <%= f.label :questions_count, "Количество вопросов (макс: #{@test.questions.count})" %>
-            <%= f.text_field :questions_count, value: @test.questions.count %>
-          </div>
-          <div class="field">
-            <%= f.label :session_length, "Длина сессии (в минутах)" %>
-            <%= f.text_field :session_length, value: 180 %>
-          </div>
-          <div class="field">
-            <%= f.label :time_per_student, "Время на прохождение (в минутых)" %>
-            <%= f.text_field :time_per_student, value: 20 %>
-          </div>
-          <div class="field">
-            <%= f.label :group_id, "Группа" %>
-            <%= f.collection_select :group_id, Group.all, :id, :name %>
-          </div>
-          <hr />
-          <div class="field">
-            <%= f.label :description, "Описание (необязательно)" %>
-            <%= f.text_field :description %>
-          </div>
-          <div class="field">
-            <%= f.label :max_points, "Макс. количество баллов за тест (необязательно)" %>
-            <%= f.text_field :max_points, value: 0 %>
-          </div>
-          <div class="field inline">
-            <%= f.check_box :report_correct_status %>
-            <%= f.label :report_correct_status, "Сообщать о правильности ответов" %>
-          </div>
+          <section class="col-1-2">
+            <div class="field">
+              <%= f.label :questions_count, "Количество вопросов (макс: #{@test.questions.count})" %>
+              <%= f.text_field :questions_count, value: @test.questions.count %>
+            </div>
+            <div class="field">
+              <%= f.label :time_per_student, "Время на прохождение (в минутых)" %>
+              <%= f.text_field :time_per_student, value: 20 %>
+            </div>
+            <div class="field">
+              <%= f.label :group_id, "Группа" %>
+              <%= f.collection_select :group_id, Group.all, :id, :name %>
+            </div>
+            <div class="field inline">
+              <%= f.check_box :report_correct_status %>
+              <%= f.label :report_correct_status, "Сообщать о правильности ответов" %>
+            </div>
+          </section>
+          <section class="col-1-2">
+            <div class="field">
+              <%= f.label :session_length, "Длина сессии (в минутах)" %>
+              <%= f.text_field :session_length, value: 180 %>
+            </div>
+            <div class="field">
+              <%= f.label :description, "Описание (необязательно)" %>
+              <%= f.text_field :description %>
+            </div>
+            <div class="field">
+              <%= f.label :max_points, "Макс. количество баллов за тест (необязательно)" %>
+              <%= f.text_field :max_points, value: 0 %>
+            </div>
+          </section>
           <%= f.submit "Открыть для тестирования" %>
         </fieldset>
       <% end %>

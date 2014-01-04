@@ -6,6 +6,7 @@ prawn_document() do |pdf|
   pdf.move_down 10
   pdf.font_size 10 do
     pdf.text "Студент: #{@assignment.student.fullname}"
+    pdf.text "Группа: #{@assignment.test_session.group.name}"
     pdf.text "Тест: #{@assignment.test_session.test.title}"
     pdf.text "Ключ: #{@assignment.private_key}"
     pdf.text "Статус прохождения: #{@assignment.completed? ? 'завершен' : 'не завершен'}", align: :left
