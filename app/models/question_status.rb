@@ -7,11 +7,10 @@ class QuestionStatus
   belongs_to :question
   embedded_in :test_student_assignment
   field :is_answered, type: Boolean, default: false
-  field :is_valid_answer, type: Boolean
+  field :correctness_level, type: Float, default: 0.0
   field :answered_at, type: DateTime, default: nil
   field :answer, type: String
 
   scope :answered, -> { where(is_answered: true) }
   scope :unanswered,  -> { where(is_answered: false) }
-  scope :has_valid_answer, -> { where(is_valid_answer: true) }
 end

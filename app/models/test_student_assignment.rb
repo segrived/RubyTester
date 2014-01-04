@@ -34,13 +34,14 @@ class TestStudentAssignment
     question_statuses.where(is_answered: true).count
   end
 
-  def valid_percent
+  def in_percent
     total = self.question_statuses.count
-    return 0.0 if total.zero? # nan fix
-    valid = question_statuses.has_valid_answer.count
-    ((valid.to_f / total.to_f) * 100).round(2)
+    return 0.0 if total.zero?
+    mul = 100.0 / total
+    sum = question_statuses.map(&:correctness_level).inject(&:+)
+    sum * mul
   end
-
+  
   def self.find_by_key(key)
     limit(1).where(private_key: key).first
   end

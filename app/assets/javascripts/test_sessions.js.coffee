@@ -20,11 +20,15 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
   setInterval(update_countdown, 1000)
 
   $('.answer-form').on 'ajax:success': (e, d, s, x) -> 
-    if d.is_valid?
-      if d.is_valid
-        alertify.success("Дан верный ответ")
+    if d.correctness_level?
+      if d.correctness_level == 'correct'
+        alertify.success "Дан верный ответ"
+      else if d.correctness_level == 'incorrect'
+        alertify.error "Дан неверный ответ"
+      else if d.correctness_level == 'partially_correct'
+        alertify.success "Дан частично верный ответ"
       else
-        alertify.error("Дан неверный ответ")
+        alertify.error "Состояние ответа неизвестно"
     if d.completed
       window.location.href = Routes.results_path()
       return
@@ -35,18 +39,16 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
 
 # test_sessions -> watch
 $(document).bind 'watch_test_sessions.load', (e, obj) =>
-  update_ui = (session_id) =>
-    $.get "/sessions/#{session_id}/status", (data) ->
+  update_ui = (id) =>
+    $.get Routes.session_status_path(id), (data) ->
       for e in data
-        student_status = $("#student-#{e.student_id} .status")
-        if e['completed?'] == true
-          student_status.parent('tr').removeClass().addClass('completed')
-        else
-          student_status.parent('tr').removeClass().addClass('active')
-        valid_answers = (_.filter e.question_statuses, (qs) -> qs.is_valid_answer).length
-        answered = (_.filter e.question_statuses, (qs) -> qs.is_answered).length
-        percent = if answered == 0 then 0 else Math.round((valid_answers / answered) * 100)
-        student_status.html("#{percent}% (#{valid_answers} из #{answered})")
+        qs = e.question_statuses
+        element_class = if e['completed?'] then 'completed' else 'active'
+        answered = (_.filter qs, (q) -> q.is_answered).length
+        status_elem = $("#student-#{e.student_id} .status")
+        console.log element_class
+        status_elem.parent('tr').removeClass().addClass(element_class)
+        status_elem.html("#{e.in_percent}% (отвечено на #{answered} из #{qs.length} вопросов)")
   session_id = $('#update-information').data('session-id')
   update_ui session_id
 

@@ -45,7 +45,7 @@ class TestSessionsController < ApplicationController
   # GET /sessions/1/status
   def status
     x = TestStudentAssignment.where(test_session_id: params[:id])
-    render json: x.to_json(methods: :completed?)
+    render json: x.to_json(methods: [:completed?, :in_percent])
   end
 
   def register
@@ -91,26 +91,36 @@ class TestSessionsController < ApplicationController
       render json: {error: "Да данный вопрос уже дан ответ"}, status: 420
       return
     end
-    # TODO: вынести в более удачное место
+    # TODO: вынести в более удачное место (!!!)
     if @question.type == 'simple'
-      result = ! (answer =~ /\A#{@question.answers}\Z/i).nil?
+      is_valid = /\A#{@question.answers}\Z/i.nil?
+      result = (answer =~ is_valid) ? 0.0 : 1.0
     elsif @question.type == 'onechoice'
-      result = @question.answer == answer
+      result = @question.answer == answer ? 1.0 : 0.0
     elsif @question.type == 'multiplechoice'
-      answer ||= []
-      result = answer.sort == @question.answer.sort
+      answer = (answer || []).uniq
+      if (answer - @question.answer).count > 0
+        result = 0.0
+      else
+        valid_variants = (answer & @question.answer).count
+        result = valid_variants.to_f / @question.answer.count.to_f
+      end
     end
     # Обновление статуса вопроса
     status.update_attributes({
       is_answered: true,
-      is_valid_answer: result,
+      correctness_level: result,
       answered_at: DateTime.now
     })
-    result_response = { completed: assignment.completed? }
+    response = { completed: assignment.completed? }
     if @session.report_correct_status
-      result_response[:is_valid] = result
+      response[:correctness_level] = case result
+        when 0.0 then :incorrect
+        when 1.0 then :correct
+        else :partially_correct
+      end
     end
-    render json: result_response
+    render json: response
   end
 
   def watch
