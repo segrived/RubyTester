@@ -10,6 +10,7 @@ class TestSession
   field :time_per_student, type: Integer
   field :end_time, type: DateTime
   field :report_correct_status, type: Boolean, default: false
+  field :use_partially_correct_answers, type: Boolean, default: true
   belongs_to :test
   belongs_to :group
   has_many :test_student_assignments, dependent: :delete

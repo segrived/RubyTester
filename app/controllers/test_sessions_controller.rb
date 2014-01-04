@@ -99,11 +99,15 @@ class TestSessionsController < ApplicationController
       result = @question.answer == answer ? 1.0 : 0.0
     elsif @question.type == 'multiplechoice'
       answer = (answer || []).uniq
-      if (answer - @question.answer).count > 0
-        result = 0.0
+      if assignment.test_session.use_partially_correct_answers
+        if (answer - @question.answer).count > 0
+          result = 0.0
+        else
+          valid_variants = (answer & @question.answer).count
+          result = valid_variants.to_f / @question.answer.count.to_f
+        end
       else
-        valid_variants = (answer & @question.answer).count
-        result = valid_variants.to_f / @question.answer.count.to_f
+        result = (answer.sort == @question.answer.sort) ? 1.0 : 0.0
       end
     end
     # Обновление статуса вопроса
@@ -145,7 +149,7 @@ class TestSessionsController < ApplicationController
 
   def results
     @assignment = TestStudentAssignment.find_by_key(cookies[:test_key])
-    unless @assignment.completed?
+    if @assignment.active? && !@assignment.completed?
       redirect_to :go and return
     end
   end

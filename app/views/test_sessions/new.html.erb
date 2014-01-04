@@ -36,6 +36,10 @@
               <%= f.label :max_points, "Макс. количество баллов за тест (необязательно)" %>
               <%= f.text_field :max_points, value: 0 %>
             </div>
+            <div class="field inline">
+              <%= f.check_box :use_partially_correct_answers, checked: true %>
+              <%= f.label :use_partially_correct_answers, "Использовать частично правильные ответы" %>
+            </div>
           </section>
           <%= f.submit "Открыть для тестирования" %>
         </fieldset>
