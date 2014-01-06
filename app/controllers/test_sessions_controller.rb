@@ -6,7 +6,7 @@ class TestSessionsController < ApplicationController
     only: [:new, :create, :destroy, :watch, :report, :status]
   before_filter :fetch_test, only: [:index, :new, :create, :destroy_inactive]
   before_filter :fetch_session,
-    only: [:destroy, :assign_student, :check_question, :watch, :report, :full_report]
+    only: [:destroy, :assign_student, :check_question, :watch, :report, :full_report, :status]
   before_filter :check_assignment_is_active, only: [:start, :results]
   before_filter :check_private_key
 
@@ -43,9 +43,8 @@ class TestSessionsController < ApplicationController
   end
 
   # GET /sessions/1/status
-  def status
-    x = TestStudentAssignment.where(test_session_id: params[:id])
-    render json: x.to_json(methods: [:completed?, :in_percent])
+  def status     
+    render json: @session.test_student_assignments
   end
 
   def register
@@ -131,7 +130,9 @@ class TestSessionsController < ApplicationController
   end
 
   def full_report
-    render json: @session.to_json(include: [:test_student_assignments, :test, :group])
+    @questions = @session.test.questions.to_a
+    @students = @session.group.students.to_a
+    render pdf: 'full_report'
   end
 
   def report

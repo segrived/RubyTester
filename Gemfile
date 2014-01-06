@@ -5,6 +5,8 @@ gem 'puma', '~> 2.7.0'
 gem 'mongoid', '~> 3.0.0'
 gem 'russian', '~> 0.6.0'
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
+gem 'mathjax-rails', '~> 1.0.3'
+gem 'oj', '~> 2.5.3'
 
 # Mongoid
 gem 'mongoid_taggable'

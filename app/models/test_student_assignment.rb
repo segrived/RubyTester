@@ -25,6 +25,7 @@ class TestStudentAssignment
   end
 
   def remains_in_sec
+    return 0 if completed?
     end_time = activate_time + test_session.time_per_student.minutes
     return 0 if end_time < DateTime.now
     ((end_time - DateTime.now) * 24 * 3600).to_i
@@ -34,16 +35,40 @@ class TestStudentAssignment
     question_statuses.where(is_answered: true).count
   end
 
-  def in_percent
-    total = self.question_statuses.count
+  def in_percent(only_answered = false)
+    statuses = self.question_statuses
+    if only_answered
+      statuses = statuses.answered
+    end
+    total = statuses.count
     return 0.0 if total.zero?
     mul = 100.0 / total
     sum = question_statuses.map(&:correctness_level).inject(&:+)
     sum * mul
   end
+
+  def status
+    if completed?
+      :completed
+    else
+      if active?
+        :active
+      else
+        :out_of_time
+      end
+    end
+  end
   
+  def answered_percent
+    in_percent(only_answered: true)
+  end
+
   def self.find_by_key(key)
     limit(1).where(private_key: key).first
+  end
+
+  def as_json(options = {})
+    super(methods: [:in_percent, :remains_in_sec, :answered_percent, :status])
   end
 
   private

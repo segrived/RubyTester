@@ -234,6 +234,9 @@ hr {
   .completed {
     background-color: #CDFDC6;
   }
+  .out_of_time {
+    background-color: #E7FEA0;
+  }
 }
 
 .answer-area {
@@ -287,5 +290,15 @@ pre, code {
 .field_with_errors {
   input[type="text"], input[type="password"], textarea {
     border-color: #FF5559;
+  }
+}
+
+.toolbar {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-bottom: 0px;
+  @include gradient(rgba(255,255,255,1), rgba(238,238,238,1));
+  span {
+    font-size: 11px;
   }
 }

@@ -71,6 +71,10 @@ select, textarea  {
     text-decoration: none;
     color: #fff;
   }
+  &.mini {
+    padding: 3px;
+    font-size: 10px;
+  }
 }
 
 button, input[type="submit"], input[type="reset"] {

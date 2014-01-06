@@ -52,4 +52,6 @@ RubyTester::Application.routes.draw do
 
   get 'tests/tags' => 'tests#tags', as: :tests_tags
   get 'tests/tagged/:tag' => 'tests#index', constraints: { tag: /[^\/]+/ }, as: :test_tags
+  
+  mathjax 'mathjax'
 end

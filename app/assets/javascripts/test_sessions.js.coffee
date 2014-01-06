@@ -39,21 +39,20 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
 
 # test_sessions -> watch
 $(document).bind 'watch_test_sessions.load', (e, obj) =>
-  update_ui = (id) =>
-    $.get Routes.session_status_path(id), (data) ->
+  session_id = window.session_id
+
+  update_ui = () =>
+    $.get Routes.session_status_path(session_id), (data) ->
       for e in data
         qs = e.question_statuses
         element_class = if e['completed?'] then 'completed' else 'active'
         answered = (_.filter qs, (q) -> q.is_answered).length
         status_elem = $("#student-#{e.student_id} .status")
-        console.log element_class
-        status_elem.parent('tr').removeClass().addClass(element_class)
-        status_elem.html("#{e.in_percent}% (отвечено на #{answered} из #{qs.length} вопросов)")
-  session_id = $('#update-information').data('session-id')
-  update_ui session_id
-
-  setInterval (()-> update_ui session_id), 5000
-
-  $('#update-information').on 'click', () ->
-    session_id = $(@).data('session-id')
-    update_ui session_id
+        status_elem.parent('tr').removeClass().addClass(e.status)
+        status_elem.html "#{answered}/#{qs.length}"
+        $("#student-#{e.student_id} .remains").html "#{e.remains_in_sec} сек."
+        $("#student-#{e.student_id} .in_percent").html "#{e.in_percent}%"
+        $("#student-#{e.student_id} .answered_percent").html("#{e.answered_percent}%")
+  update_ui()
+  setInterval (()-> update_ui()), 5000
+  $('#update-information').on 'click', () -> update_ui()

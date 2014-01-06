@@ -1,22 +1,35 @@
 <script type="text/javascript">
-  window.session_data = <%= @session.to_json.html_safe %>
+  window.session_id = "<%= @session.id %>";
 </script>
 
 <section id="content-full">
-  <h1>Наблюдение за прохождением теста</h1>
-  <p>Тест: <b><%= @session.test.title %></b></p>
-  <p>Количество вопросов: <b><%= @session.questions_count %></b></p>
+  <div class="clearfix" id="test-info-bar">
+  </div>
+  <div class="toolbar clearfix">
+    <div class="left">
+      <button class="mini" id="update-information">Обновить информацию</button>
+      <%= link_to "Сгенерировать отчет", session_full_report_path(@session), class: 'btn mini' %>
+    </div>
+    <div class="right">
+      <span>Тест: <b><%= @session.test.title %></b></span>
+    </div>
+  </div>
   <table id="session-student-status-list">
     <tr>
-      <th style="width: 70%;">Полное имя</th>
-      <th style="width: 30%;">Статус</th>
+      <th style="width: 50%;">Полное имя</th>
+      <th style="width: 10%;">Отвечено</th>
+      <th style="width: 15%;">Предварительно</th>
+      <th style="width: 15%;">Текущий</th>
+      <th style="width: 10%;">Осталось</th>
     </tr>
     <% @session.group.students.each do |student| %>
       <tr class="test-session-student-item" id="student-<%= student.id %>">
         <td><%= link_to student.fullname, session_report_path(@session, student.id) %></td>
-        <td class="status">Пользователь не проходил этот тест</td>
+        <td class="status">—</td>
+        <td class="in_percent"></td>
+        <td class="answered_percent"></td>
+        <td class="remains"></td>
       </tr>
     <% end %>
   </table>
-  <button id="update-information" data-session-id="<%= @session.id %>">Обновить информацию</button>
 </section>
