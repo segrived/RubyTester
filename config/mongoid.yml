@@ -17,7 +17,6 @@ development: &defaults
     # use_utc: false
 
 production:
-  <<: *defaults
   sessions:
     default:
       uri: <%= ENV['MONGOHQ_URL'] %>
