@@ -13,7 +13,7 @@
     <% if test.is_archived %>
       <%= link_to "разархивировать", archive_test_path(test, set_state: false), method: 'post' %> |
     <% else %>
-      <span class="show-active-sessions link dashed">
+      <span class="show-active-sessions link">
         <% active_sessions = test.test_sessions.active.to_a %>
         <% if active_sessions.count > 0 %>
           активных сессий: <b><%= active_sessions.count %></b>

@@ -23,6 +23,11 @@
   transition-duration: $durarion;
 }
 
+@mixin transition($options) {
+  -webkit-transition: $options;
+  transition: $options;
+}
+
 @mixin box-sizing($sizing) {
   -webkit-box-sizing: $sizing;
   -moz-box-sizing: $sizing;

@@ -87,11 +87,21 @@ header {
     cursor: pointer;
     color: #1569c7;
   }
+
+}
+
+.link {
+  text-decoration:    none;
+  @include transition(color .3s ease-in-out);
+  &:link, &:hover, &:active {
+    @include transition(color .3s ease-in-out);
+  }
+  &:link    { color: $blue;   }
+  &:hover   { color: $aqua;   }
+  &:active  { color: $orange; }
+  //&:visited { color: $purple; }
   &.dashed {
     border-bottom: 1px dashed;
-  }
-  &.underline {
-    text-decoration: underline;
   }
 }
 
