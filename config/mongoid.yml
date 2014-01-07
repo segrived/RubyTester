@@ -20,7 +20,6 @@ production:
   <<: *defaults
   sessions:
     default:
-      <<: *default_session
       uri: <%= ENV['MONGOHQ_URL'] %>
       database: rubytester
 
