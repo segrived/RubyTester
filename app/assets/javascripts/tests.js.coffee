@@ -21,7 +21,7 @@ $(document).bind 'new_tests.load', (e, obj) =>
 $(document).bind 'edit_tests.load', (e, obj) =>
   $('.remove-test-tag').on 
     'ajax:success': -> $(this).parent('.test-tag').remove()
-    'ajax:error':   -> alert('Не удалось удалить тег')
+    'ajax:error'  : -> alert('Не удалось удалить тег')
 
   $('#test-options-link').click ->
     $('#test-options').slideToggle('fast')

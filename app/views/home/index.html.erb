@@ -1,22 +1,30 @@
 <section id="content-full">
-  <table>
-    <tr>
-      <th>Название теста</th>
-      <th>Описание</th>
-      <th>Осталось</th>
-      <th>Для группы</th>
-    </tr>
-    <% @active_sessions.each do |s| %>
+  <% if has_uncompleted_session? %>
+    <p>
+      Другая сессия, начатая на этом компьютере ещё не завершена 
+      (<b><%= active_session.test_session.test.title %></b>).
+    </p>
+    <p><%= link_to "Продолжить", :go %> или <%= link_to "завершить", :end %></p>
+  <% else %>
+    <table>
       <tr>
-        <td><%= link_to s.test.title, session_register_path(s) %></td>
-        <td><%= s.description | "отсутствует" %></td>
-        <td><% if s.end_time.nil? %>
-          неограничено
-        <% else %>
-          <%= distance_of_time_in_words(s.remains_in_sec) %>
-        <% end %></td>
-        <td><%= s.group ? s.group.name : "неопределено" %></td>
+        <th>Название теста</th>
+        <th>Описание</th>
+        <th>Осталось</th>
+        <th>Для группы</th>
       </tr>
-    <% end %>
-  </table>
+      <% @active_sessions.each do |s| %>
+        <tr>
+          <td><%= link_to s.test.title, session_register_path(s) %></td>
+          <td><%= s.description | "отсутствует" %></td>
+          <td><% if s.end_time.nil? %>
+            неограничено
+          <% else %>
+            <%= distance_of_time_in_words(s.remains_in_sec) %>
+          <% end %></td>
+          <td><%= s.group ? s.group.name : "неопределено" %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
 </section>

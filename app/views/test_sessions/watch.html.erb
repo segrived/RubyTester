@@ -16,19 +16,28 @@
   </div>
   <table id="session-student-status-list">
     <tr>
-      <th style="width: 50%;">Полное имя</th>
-      <th style="width: 10%;">Отвечено</th>
-      <th style="width: 15%;">Предварительно</th>
-      <th style="width: 15%;">Текущий</th>
-      <th style="width: 10%;">Осталось</th>
+      <th style="width: 40%;">Полное имя</th>
+      <th></th>
+      <th>Состояние</th>
+      <th>Отвечено</th>
+      <th>Предварительно</th>
+      <th>Текущий</th>
+      <th>Осталось</th>
     </tr>
     <% @session.group.students.each do |student| %>
       <tr class="test-session-student-item" id="student-<%= student.id %>">
         <td><%= link_to student.fullname, session_report_path(@session, student.id) %></td>
+        <td><%= link_to "\u21E9", session_questions_status_path(@session, student.id), remote: true,
+          class: 'show-status' %></td>
+        <td class="state">—</td>
         <td class="status">—</td>
-        <td class="in_percent"></td>
-        <td class="answered_percent"></td>
-        <td class="remains"></td>
+        <td class="in_percent">—</td>
+        <td class="answered_percent">—</td>
+        <td class="remains">—</td>
+      </tr>
+      <tr class="student-test-status hidden" id="student-status-<%= student.id %>">
+        <td colspan="100">
+        </td>
       </tr>
     <% end %>
   </table>

@@ -4,7 +4,17 @@ module ApplicationHelper
     (render partial: '/shared/errors', object: object).html_safe
   end
 
-  # def onject
+  def active_session
+    TestStudentAssignment.find_by_key(cookies[:test_key])
+  end
+
+  def has_uncompleted_session?
+    key = cookies[:test_key]
+    return false unless key
+    assignment = TestStudentAssignment.find_by_key(key)
+    return false unless assignment
+    !assignment.completed?
+  end
 
 end
 

@@ -6,7 +6,10 @@ class TestSessionsController < ApplicationController
     only: [:new, :create, :destroy, :watch, :report, :status]
   before_filter :fetch_test, only: [:index, :new, :create, :destroy_inactive]
   before_filter :fetch_session,
-    only: [:destroy, :assign_student, :check_question, :watch, :report, :full_report, :status]
+    only: [
+      :destroy, :assign_student, :check_question,
+      :watch, :report, :questions_status, :full_report, :status
+    ]
   before_filter :check_assignment_is_active, only: [:start, :results]
   before_filter :check_private_key
 
@@ -76,7 +79,7 @@ class TestSessionsController < ApplicationController
     if @a.completed? || !@a.active?
       redirect_to :results and return
     end
-    @question_statuses = @a.question_statuses.unanswered
+    @question_statuses = @a.question_statuses.includes(:question).unanswered
     render :test_page
   end
 
@@ -135,13 +138,18 @@ class TestSessionsController < ApplicationController
     render pdf: 'full_report'
   end
 
+  def questions_status
+    @assignment = @session.test_student_assignments.where(student_id: params[:student_id]).first
+    @questions = @assignment.question_statuses.includes(:question)
+    render partial: 'questions_status'
+  end
+
   def report
     @assignment = @session.test_student_assignments.where(student_id: params[:student_id]).first
     unless @assignment
       redirect_to :back and return
     end
-    @question_ids = @assignment.question_statuses.map(&:question_id)
-    @questions = Question.any_in(id: @question_ids).only(:text).to_a
+    @questions = @assignment.question_statuses.includes(:question)
     respond_to do |format|
       format.html
       format.pdf { render layout: false }
@@ -166,6 +174,7 @@ class TestSessionsController < ApplicationController
   end
 
   def check_assignment_is_active
+    redirect_to :root unless cookies[:test_key]
     unless TestStudentAssignment.find_by_key(cookies[:test_key])
       redirect_to :root
     end

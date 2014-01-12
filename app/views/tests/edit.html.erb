@@ -1,4 +1,28 @@
-<h1>Редактирование теста</h1>
-<% @test.questions.each do |question| %>
-  <p><%= question.text %></p>
-<% end %>
+<section id="content">
+  <div class="center-box">
+    <h1>Редактирование теста</h1>
+    <% @test.questions.each do |question| %>
+      <% if question.type == 'onechoice' %>
+        <%= form_tag test_question_path(@test, question), id: 'test', method: 'put',
+          remote: true, style: 'margin-bottom: 30px;' do %>
+          <fieldset>
+            <legend>tt</legend>
+            <%= hidden_field_tag :type, question.type %>
+            <div class="field">
+              <%= label_tag :text, "Текст вопроса" %> 
+              <%= text_area_tag :text, question.text %>
+            </div>
+            <% question.variants.each do |(k, v)| %>
+              <div class="field">
+                <% id = "variants[#{k}]" %>
+                <%= radio_button_tag :answer, k, question.answer == k %>
+                <%= text_field_tag id, v, class: 'width-500px' %>
+              </div>
+            <% end %>
+            <%= submit_tag %>
+          </fieldset>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</section>

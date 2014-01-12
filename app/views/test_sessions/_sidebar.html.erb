@@ -3,7 +3,9 @@
 <p>Вы проходите тест: <b><%= @a.test_session.test.title %></b></p>
 <p>
   <b> времени: </b>
-  <span id="total-time" data-total-sec="<%= @a.test_session.time_per_student * 60 %>"></span>
+  <span id="total-time"
+    data-total-sec="<%= @a.test_session.time_per_student * 60 %>">
+  </span>
   <div id="progress-bar">
     <span id="remains-time-text" data-remains-sec="<%= @a.remains_in_sec %>">
       Осталось: <span id="remains-time-text-inner"></span>

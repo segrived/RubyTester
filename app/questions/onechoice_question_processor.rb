@@ -1,0 +1,2 @@
+class OnechoiceQuestionProcessor < QuestionProcessor
+end

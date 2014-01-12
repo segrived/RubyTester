@@ -1,0 +1,2 @@
+class SimpleQuestionProcessor < QuestionProcessor
+end

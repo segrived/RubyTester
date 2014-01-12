@@ -16,9 +16,9 @@
     <hr />
 
     <h2>Статистика по вопросам</h2>
-    <% @assignment.question_statuses.each do |qs| %>
+    <% @questions.each do |qs| %>
       <li>
-        <p><b>Текст вопроса:</b> <%= @questions.find {|q| q.id == qs.question_id}.text %></p>
+        <p><b>Текст вопроса:</b> <%= qs.question.text %></p>
         <% if qs.is_answered %>
           <% if qs.correctness_level == 1.0 %>
             <p class="green">Был дан верный ответ</p>

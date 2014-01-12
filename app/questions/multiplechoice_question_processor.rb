@@ -1,0 +1,2 @@
+class MultiplechoiceQuestionProcessor < QuestionProcessor
+end

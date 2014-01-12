@@ -4,7 +4,7 @@ ruby '1.9.3'
 
 gem 'rails', '~> 3.2.16'
 gem 'puma', '~> 2.7.0'
-gem 'mongoid', '~> 3.0.0'
+gem 'mongoid', '~> 3.1.6'
 gem 'russian', '~> 0.6.0'
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 gem 'mathjax-rails', '~> 1.0.3'

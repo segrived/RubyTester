@@ -40,17 +40,24 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
 # test_sessions -> watch
 $(document).bind 'watch_test_sessions.load', (e, obj) =>
   session_id = window.session_id
+  $('.show-status').on 
+    'ajax:success': (x, d, s) ->
+      info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
+      info_area.html(d).show()
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub, info_area.get(0)])
+
 
   update_ui = () =>
     $.get Routes.session_status_path(session_id), (data) ->
       for e in data
         qs = e.question_statuses
-        element_class = if e['completed?'] then 'completed' else 'active'
         answered = (_.filter qs, (q) -> q.is_answered).length
         status_elem = $("#student-#{e.student_id} .status")
         status_elem.parent('tr').removeClass().addClass(e.status)
         status_elem.html "#{answered}/#{qs.length}"
-        $("#student-#{e.student_id} .remains").html "#{e.remains_in_sec} сек."
+        formatted_time = moment().startOf('day').seconds(e.remains_in_sec)
+        $("#student-#{e.student_id} .state").html e.status
+        $("#student-#{e.student_id} .remains").html formatted_time.format('HH:mm:ss')
         $("#student-#{e.student_id} .in_percent").html "#{e.in_percent}%"
         $("#student-#{e.student_id} .answered_percent").html("#{e.answered_percent}%")
   update_ui()
