@@ -5,8 +5,8 @@
   <div class="info left">
     <b>Теги: </b>
     <span>
-      <% l = ->(t) { link_to t, test_tags_path(t) } %>
-      <%= test.tags_array.map(&l).join(', ').html_safe %>
+      <% to_links = ->(tag) { link_to tag, test_tags_path(tag) } %>
+      <%= test.tags_array.map(&to_links).join(', ').html_safe %>
     </span>
   </div>
   <div class="info right">

@@ -5,7 +5,7 @@ class QuestionStatus
   include Mongoid::Timestamps
 
   belongs_to :question
-  embedded_in :test_student_assignment
+  embedded_in :test_attempt
   field :is_answered, type: Boolean, default: false
   field :correctness_level, type: Float, default: 0.0
   field :answered_at, type: DateTime, default: nil

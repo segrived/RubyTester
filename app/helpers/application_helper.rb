@@ -5,15 +5,15 @@ module ApplicationHelper
   end
 
   def active_session
-    TestStudentAssignment.find_by_key(cookies[:test_key])
+    TestAttempt.find_by_key(cookies[:test_key])
   end
 
   def has_uncompleted_session?
     key = cookies[:test_key]
     return false unless key
-    assignment = TestStudentAssignment.find_by_key(key)
-    return false unless assignment
-    !assignment.completed?
+    attempt = TestAttempt.find_by_key(key)
+    return false unless attempt
+    !attempt.completed?
   end
 
 end

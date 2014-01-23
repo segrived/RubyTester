@@ -7,7 +7,7 @@ $gutter-width: 30;
 $total-width: 100%;
 
 $font-stack: "Helvetica", "sans-serif";
-$heading-font-stack: "Georgia", "Helvetica", "sans-serif";
+$heading-font-stack: "Trebuchet MS", "Liberation Sans", "DejaVu Sans", "sans-serif";
 $primary-fg-color: #333;
 $primary-bg-color: #fff;
 $heading-color: #555;
@@ -73,8 +73,12 @@ header {
     .item {
       @include header-item;
       background-color: #2c81e9;
+      border-color: #156CD7;
+      border-width: 0 1px 1px 1px;
+      border-style: solid;
       &:hover {
         background-color: #8F7B07;
+        border-color: #7B6A06;
       }
     }
   }
@@ -92,14 +96,6 @@ header {
 
 .link {
   text-decoration:    none;
-  @include transition(color .3s ease-in-out);
-  &:link, &:hover, &:active {
-    @include transition(color .3s ease-in-out);
-  }
-  &:link    { color: $blue;   }
-  &:hover   { color: $aqua;   }
-  &:active  { color: $orange; }
-  //&:visited { color: $purple; }
   &.dashed {
     border-bottom: 1px dashed;
   }
@@ -135,6 +131,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
   font-family: $heading-font-stack;
   margin-left: 0px;
+  margin-top: 0px;
   margin-bottom: 8px;
   padding: 0px 0px 2px 2px;
   width: 100%;
@@ -148,6 +145,10 @@ h1 {
 h2 {
   font-size: 19px;
   border-bottom: 0px;
+}
+
+p {
+  font-size: 12px;
 }
 
 #test-items {
@@ -176,12 +177,14 @@ h2 {
       display: inline;
       padding-right: 8px;
     }
-    .tag-first-word {
+    .tag-first-letter {
       font-weight: bold;
       display: inline-block;
       width: 35px;
       text-align: center;
-      border-right: 1px solid #ccc;
+      color: #fff;
+      background-color: #555;
+      margin-right: 10px;
     }
   }
 }

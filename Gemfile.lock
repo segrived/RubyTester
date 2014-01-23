@@ -55,8 +55,6 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mathjax-rails (1.0.3)
-      railties (>= 3.0)
     mime-types (1.25.1)
     mongoid (3.1.6)
       activemodel (~> 3.2)
@@ -104,6 +102,9 @@ GEM
       activesupport (= 3.2.16)
       bundler (~> 1.0)
       railties (= 3.2.16)
+    rails-dev-tweaks (0.6.1)
+      actionpack (~> 3.1)
+      railties (~> 3.1)
     railties (3.2.16)
       actionpack (= 3.2.16)
       activesupport (= 3.2.16)
@@ -152,7 +153,6 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   jquery-rails (~> 3.0.0)
   js-routes
-  mathjax-rails (~> 1.0.3)
   mongoid (~> 3.1.6)
   mongoid_slug
   mongoid_taggable
@@ -161,6 +161,7 @@ DEPENDENCIES
   prawn_rails
   puma (~> 2.7.0)
   rails (~> 3.2.16)
+  rails-dev-tweaks
   russian (~> 0.6.0)
   sass (= 3.2.10)
   sass-rails (~> 3.2.3)

@@ -1,18 +1,18 @@
 <section id="content-full">
   <h1>Статус прохождения теста</h1>
-  <% if @assignment.nil? %>
+  <% if @attempt.nil? %>
     <div class="message error">Нет данных про данного студента. Возможно данный студент ещё не начал прохождение теста</div>
   <% else %>
     <h2>Информация о прохождении</h2>
-    <p><b>Студент:</b> <%= @assignment.student.fullname %></p>
-    <p><b>Тест:</b> <%= @assignment.test_session.test.title %></p>
-    <p><b>Приватный ключ:</b> <%= @assignment.private_key %></p>
-    <p><b>Статус прохождения:</b> <%= @assignment.completed? ? 'завершен' : 'не завершен' %></p>
-    <p><b>Статус теста:</b> <%= @assignment.active? ? 'активен' : 'неактивен' %></p>
+    <p><b>Студент:</b> <%= @attempt.student.fullname %></p>
+    <p><b>Тест:</b> <%= @attempt.test_session.test.title %></p>
+    <p><b>Приватный ключ:</b> <%= @attempt.private_key %></p>
+    <p><b>Статус прохождения:</b> <%= @attempt.completed? ? 'завершен' : 'не завершен' %></p>
+    <p><b>Статус теста:</b> <%= @attempt.active? ? 'активен' : 'неактивен' %></p>
     <hr />
 
     <h2>Статистика</h2>
-    <p><b>Правильность ответов:</b> <%= @assignment.in_percent %>%</p>
+    <p><b>Правильность ответов:</b> <%= @attempt.in_percent %>%</p>
     <hr />
 
     <h2>Статистика по вопросам</h2>
@@ -35,9 +35,9 @@
     <hr />
 
     <h2>Информация о тесте</h2>
-    <p><b>Всего вопросов в тесте:</b> <%= @assignment.test_session.test.questions.count %></p>
-    <p><b>Теги:</b> <%= @assignment.test_session.test.tags_str %></p>
-    <p><b>Создан:</b> <%= @assignment.test_session.test.created_at %></p>
+    <p><b>Всего вопросов в тесте:</b> <%= @attempt.test_session.test.questions.count %></p>
+    <p><b>Теги:</b> <%= @attempt.test_session.test.tags_str %></p>
+    <p><b>Создан:</b> <%= @attempt.test_session.test.created_at %></p>
   <% end %>
 
   <%= link_to "назад к списку студентов", session_watch_path(params[:id]), class: 'btn' %>

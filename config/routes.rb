@@ -18,9 +18,11 @@ RubyTester::Application.routes.draw do
     end
   end
 
-  get 'go' => 'test_sessions#start'
-  get 'results' => 'test_sessions#results'
-  get 'end' => 'test_sessions#end'
+  controller 'test_sessions' do
+    get 'start'
+    get 'results'
+    get 'end'
+  end
 
   scope 'sessions' do
     get ':id/register' => 'test_sessions#register', as: :session_register
@@ -54,5 +56,4 @@ RubyTester::Application.routes.draw do
   get 'tests/tags' => 'tests#tags', as: :tests_tags
   get 'tests/tagged/:tag' => 'tests#index', constraints: { tag: /[^\/]+/ }, as: :test_tags
   
-  mathjax 'mathjax'
 end

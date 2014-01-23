@@ -1,4 +1,4 @@
-assignment.question_statuses.each do |qs|
+attempt.question_statuses.each do |qs|
   text = qs.question.text
   pdf.text "<color rgb='0000ff'>Вопрос</color>: #{text}", inline_format: true
   if qs.is_answered

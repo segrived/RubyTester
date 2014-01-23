@@ -5,24 +5,24 @@ prawn_document() do |pdf|
   pdf.stroke_horizontal_rule
   pdf.move_down 10
   pdf.font_size 10 do
-    pdf.text "Студент: #{@assignment.student.fullname}"
-    pdf.text "Группа: #{@assignment.test_session.group.name}"
-    pdf.text "Тест: #{@assignment.test_session.test.title}"
-    pdf.text "Ключ: #{@assignment.private_key}"
-    pdf.text "Статус прохождения: #{@assignment.completed? ? 'завершен' : 'не завершен'}", align: :left
-    pdf.text "Статус теста: #{@assignment.active? ? 'активен' : 'неактивен'}", align: :left
+    pdf.text "Студент: #{@attempt.student.fullname}"
+    pdf.text "Группа: #{@attempt.test_session.group.name}"
+    pdf.text "Тест: #{@attempt.test_session.test.title}"
+    pdf.text "Ключ: #{@attempt.private_key}"
+    pdf.text "Статус прохождения: #{@attempt.completed? ? 'завершен' : 'не завершен'}", align: :left
+    pdf.text "Статус теста: #{@attempt.active? ? 'активен' : 'неактивен'}", align: :left
   end
   pdf.move_down 25
   pdf.text "Общая статистика прохождения", align: :center, size: 16
   pdf.stroke_horizontal_rule
   pdf.move_down 10
-  pdf.text "Общая правильность ответов: #{@assignment.in_percent}%", color: "#00ff00"
+  pdf.text "Общая правильность ответов: #{@attempt.in_percent}%", color: "#00ff00"
   pdf.move_down 25
   pdf.text "Статистика по вопросам", align: :center, size: 16
   pdf.stroke_horizontal_rule
   pdf.move_down 10
   pdf.font_size 12 do
-    render 'per_student', pdf: pdf, assignment: @assignment
+    render 'per_student', pdf: pdf, attempt: @attempt
   end
 
   pdf.repeat :all do

@@ -20,7 +20,9 @@ development: &defaults
 production:
   sessions:
     default:
-      uri: <%= ENV['MONGOHQ_URL'] %>
+      hosts:
+        - localhost:27017
+      database: rt_prod
       options:
         skip_version_check: true
 

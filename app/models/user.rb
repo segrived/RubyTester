@@ -7,6 +7,7 @@ class User
   field :password_hash, type: String
   field :password_salt, type: String
   field :permissions, type: Array
+  field :fullname, type: String
 
   attr_accessor :password, :permissions_hash
 

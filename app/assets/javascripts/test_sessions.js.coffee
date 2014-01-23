@@ -12,8 +12,8 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
       return
     r_sec = moment(end_time).diff(moment(), 'seconds')
     remains = moment().startOf('day').seconds(r_sec)
-    progress_remains = r_sec / total_seconds * 100
-    pb_progress.css('width', "#{progress_remains}%")
+    progress_remains = r_sec / total_seconds
+    pb_progress.css('width', "#{progress_remains * 100}%")
     pb_text.html remains.format('HH:mm:ss')
 
   update_countdown() # init countdown state
@@ -21,45 +21,56 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
 
   $('.answer-form').on 'ajax:success': (e, d, s, x) -> 
     if d.correctness_level?
-      if d.correctness_level == 'correct'
-        alertify.success "Дан верный ответ"
-      else if d.correctness_level == 'incorrect'
-        alertify.error "Дан неверный ответ"
-      else if d.correctness_level == 'partially_correct'
-        alertify.success "Дан частично верный ответ"
-      else
-        alertify.error "Состояние ответа неизвестно"
+      status = switch d.correctness_level
+        when 'correct' then ['success', 'Дан верный ответ']
+        when 'incorrect' then ['error', 'Дан неверный ответ']
+        when 'partially_correct' then ['success', 'Дан частично верный ответ']
+        else ['error', 'Состояние ответа неизвестно']
     if d.completed
       window.location.href = Routes.results_path()
       return
     answered = parseInt($('#answered-count').html(), 10)
     $('#answered-count').html(answered+1)
     $(@).parent('.answer-area').hide 'normal'
+  $('.answer-form').on 'ajax:error': (e, d, s, x) ->
+    alertify.error(d.responseJSON.error)
+    # Если код сообщение 420 - сообщение нужно скрыть
+    if d.status == 420
+      $(@).parent('.answer-area').hide 'normal'
+    # Если сообщение 421 - выйди из теста
+    if d.status == 421
+      window.location.href = Routes.results_path()
 
 
 # test_sessions -> watch
 $(document).bind 'watch_test_sessions.load', (e, obj) =>
   session_id = window.session_id
-  $('.show-status').on 
+  $('.show-status').on
+    
+    'click': (x) ->
+      info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
+      info_area.show()
     'ajax:success': (x, d, s) ->
       info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
-      info_area.html(d).show()
-      MathJax.Hub.Queue(["Typeset",MathJax.Hub, info_area.get(0)])
-
+      info_area.html(d)
+    'ajax:error': (x) ->
+      info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
+      info_area.html('Не удалось загрузить информацию для данного студента. Возможно данный студент ещё не проходил тестирование')
 
   update_ui = () =>
     $.get Routes.session_status_path(session_id), (data) ->
       for e in data
         qs = e.question_statuses
-        answered = (_.filter qs, (q) -> q.is_answered).length
-        status_elem = $("#student-#{e.student_id} .status")
+        stud_elem = $("#student-#{e.student_id}")
+        answered = qs.count((q) -> q.is_answered)
+        status_elem = stud_elem.children('.status')
         status_elem.parent('tr').removeClass().addClass(e.status)
         status_elem.html "#{answered}/#{qs.length}"
         formatted_time = moment().startOf('day').seconds(e.remains_in_sec)
-        $("#student-#{e.student_id} .state").html e.status
-        $("#student-#{e.student_id} .remains").html formatted_time.format('HH:mm:ss')
-        $("#student-#{e.student_id} .in_percent").html "#{e.in_percent}%"
-        $("#student-#{e.student_id} .answered_percent").html("#{e.answered_percent}%")
+        stud_elem.children('.state').html e.status
+        stud_elem.children('.remains').html formatted_time.format('HH:mm:ss')
+        stud_elem.children('.in_percent').html "#{e.in_percent}%"
+        stud_elem.children('.answered_percent').html "#{e.answered_percent}%"
   update_ui()
   setInterval (()-> update_ui()), 5000
   $('#update-information').on 'click', () -> update_ui()

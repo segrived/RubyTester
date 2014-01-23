@@ -6,17 +6,22 @@
         <%= f.errors %>
         <fieldset>
           <section class="col-1-2">
+            <h2>Обязательные поля</h2>
             <div class="field">
               <%= f.label :questions_count, "Количество вопросов (макс: #{@test.questions.count})" %>
               <%= f.text_field :questions_count, value: @test.questions.count %>
             </div>
             <div class="field">
-              <%= f.label :time_per_student, "Время на прохождение (в минутых)" %>
+              <%= f.label :time_per_student, "Время на прохождение (в минутах)" %>
               <%= f.text_field :time_per_student, value: 20 %>
             </div>
             <div class="field">
               <%= f.label :group_id, "Группа" %>
               <%= f.collection_select :group_id, Group.all, :id, :name %>
+            </div>
+            <div class="field">
+              <%= f.label :session_length, "Длина сессии (в минутах)" %>
+              <%= f.text_field :session_length, value: 180 %>
             </div>
             <div class="field inline">
               <%= f.check_box :report_correct_status %>
@@ -24,9 +29,11 @@
             </div>
           </section>
           <section class="col-1-2">
+            <h2>Необязательные поля</h2>
             <div class="field">
-              <%= f.label :session_length, "Длина сессии (в минутах)" %>
-              <%= f.text_field :session_length, value: 180 %>
+              <%= f.label :secret_code, "Секретный код (пароль) (необязательно)" %>
+              <%= f.text_field :secret_code %>
+              <%= link_to_function "Сгенерировать код", :generate_code %>
             </div>
             <div class="field">
               <%= f.label :description, "Описание (необязательно)" %>

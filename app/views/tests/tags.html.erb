@@ -3,7 +3,7 @@
   <div id="full-tag-list">
     <% @tags.group_by { |g| g.first }.each do |key, value| %>
       <div class="tag-group">
-        <div class="tag-first-word"><%= key %></div>
+        <div class="tag-first-letter"><%= key %></div>
         <% value.each do |tag| %>
           <div class="tag-item">
             <%= link_to tag, test_tags_path(tag) %>

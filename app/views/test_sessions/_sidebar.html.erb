@@ -2,7 +2,6 @@
 <p>Вы: <b><%= @a.student %></b></p>
 <p>Вы проходите тест: <b><%= @a.test_session.test.title %></b></p>
 <p>
-  <b> времени: </b>
   <span id="total-time"
     data-total-sec="<%= @a.test_session.time_per_student * 60 %>">
   </span>

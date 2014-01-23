@@ -2,6 +2,6 @@
 admin_account = User.new({
   login: 'rubytester',
   password: 'rubytester',
-  permissions: %w[ canAdmin canLogin ]
+  permissions: User::PERMISSIONS
 })
 admin_account.save

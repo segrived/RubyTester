@@ -4,27 +4,43 @@
       Другая сессия, начатая на этом компьютере ещё не завершена 
       (<b><%= active_session.test_session.test.title %></b>).
     </p>
-    <p><%= link_to "Продолжить", :go %> или <%= link_to "завершить", :end %></p>
+    <p><%= link_to "Продолжить", :start %> или <%= link_to "завершить", :end %></p>
   <% else %>
-    <table>
-      <tr>
-        <th>Название теста</th>
-        <th>Описание</th>
-        <th>Осталось</th>
-        <th>Для группы</th>
-      </tr>
-      <% @active_sessions.each do |s| %>
-        <tr>
-          <td><%= link_to s.test.title, session_register_path(s) %></td>
-          <td><%= s.description | "отсутствует" %></td>
-          <td><% if s.end_time.nil? %>
-            неограничено
+    <h1>Активные сессии</h1>
+    <% @active_sessions.each do |session| %>
+      <div style="padding: 10px; border: 1px solid #ccc; background-color: #eee; margin-bottom: 15px;">
+        <div class="clearfix">
+          <div class="left">
+            <h1>
+              <%= link_to session.test.title, session_register_path(session), title: 'Нажмите для прохождения данного текста' %>
+            </h1>
+          </div>
+          <div class="right">
+            <% if logged? && logged_user.can?('useTests') %>
+              <%= link_to image_tag('eye.png'),
+                session_watch_path(session), title: 'Нажмите для наблюдения за состоянием прохождения'
+              %>
+            <% end %>
+          </div>
+        </div>
+        <div>Преподаватель: <%= session.user.try(:login) || 'неизвестен' %></div>
+        <div>Группа: <%= session.group.try(:name) || 'неизвестна' %></div>
+        <div>Время на прохождение: <%= session.time_per_student %> минут</div>
+        <% if session.max_points > 0 %>
+          <div>Макс. количество баллов за тест: <%= session.max_points %></div>
+        <% end %>
+        <div>
+          Отключение через:
+          <% if session.end_time.nil? %>
+            неограниченно      
           <% else %>
-            <%= distance_of_time_in_words(s.remains_in_sec) %>
-          <% end %></td>
-          <td><%= s.group ? s.group.name : "неопределено" %></td>
-        </tr>
-      <% end %>
-    </table>
+           <%= distance_of_time_in_words(session.remains_in_sec) %>
+          <% end %>
+        </div>
+        <% if session.description.present? %>
+          <div>Описание сессии: <%= session.description %></div>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </section>

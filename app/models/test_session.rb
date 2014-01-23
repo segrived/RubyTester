@@ -11,9 +11,11 @@ class TestSession
   field :end_time, type: DateTime
   field :report_correct_status, type: Boolean, default: false
   field :use_partially_correct_answers, type: Boolean, default: true
+  field :secret_code, type: String
   belongs_to :test
   belongs_to :group
-  has_many :test_student_assignments, dependent: :delete
+  belongs_to :user
+  has_many :test_attempts, dependent: :delete
   
   # Активной считается та сессия, которая ещё не окончена, либо не имеет даты завершения
   scope :active, -> { any_of({:end_time.gt => Time.now}, {:end_time => nil}) }
@@ -30,6 +32,7 @@ class TestSession
     presence: true
   validates :session_length, numericality: { greater_than_or_equal_to: 0 }
   validates :time_per_student, numericality: { greater_than: 0 }
+  validates :max_points, numericality: { greater_than_or_equal_to: 0 }
   validate :check_test_archived_state
   
   def remains_in_sec

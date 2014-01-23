@@ -5,12 +5,10 @@ class TestSessionsController < ApplicationController
   before_filter -> c { c.check_permissions "useTests" },
     only: [:new, :create, :destroy, :watch, :report, :status]
   before_filter :fetch_test, only: [:index, :new, :create, :destroy_inactive]
-  before_filter :fetch_session,
-    only: [
-      :destroy, :assign_student, :check_question,
-      :watch, :report, :questions_status, :full_report, :status
-    ]
-  before_filter :check_assignment_is_active, only: [:start, :results]
+  before_filter :fetch_session, only: [
+    :destroy, :assign_student, :check_question,
+    :watch, :report, :questions_status, :full_report, :status]
+  before_filter :check_attempt_is_active, only: [:start, :results]
   before_filter :check_private_key
 
   # GET /tests/1/sessions
@@ -25,9 +23,10 @@ class TestSessionsController < ApplicationController
 
   # POST /tests/1/sessions
   def create
-    @test_session = @test.test_sessions.build(params[:test_session])
-    if @test_session.save then
-      redirect_to session_watch_path(@test_session)
+    @session = @test.test_sessions.build(params[:test_session])
+    @session.user = logged_user.id
+    if @session.save then
+      redirect_to session_watch_path(@session)
     else
       render :new
     end
@@ -47,13 +46,13 @@ class TestSessionsController < ApplicationController
 
   # GET /sessions/1/status
   def status     
-    render json: @session.test_student_assignments
+    render json: @session.test_attempts
   end
 
   def register
     if cookies[:test_key].present?
-      if TestStudentAssignment.where(private_key: cookies[:test_key]).exists?
-        redirect_to :go
+      if TestAttempt.where(private_key: cookies[:test_key]).exists?
+        redirect_to :start
       else
         cookies.delete(:test_key)
         redirect_to session_register_path(params[:id])
@@ -64,18 +63,18 @@ class TestSessionsController < ApplicationController
   end
 
   def assign_student
-    assignment = TestStudentAssignment.new(test_session_id: @session.id, student_id: params[:student_id])
+    attempt = TestAttempt.new(test_session_id: @session.id, student_id: params[:student_id])
     qs = Question.get_random_ids(@session.test, @session.questions_count).to_a.map { |question|
-      QuestionStatus.new(question: question, is_answered: false)
+      QuestionStatus.new(question: question)
     }.to_a
-    assignment.question_statuses = qs
-    assignment.save
-    cookies[:test_key] = assignment.private_key
-    redirect_to :go
+    attempt.question_statuses = qs
+    attempt.save
+    cookies[:test_key] = attempt.private_key
+    redirect_to :start
   end
 
   def start
-    @a = TestStudentAssignment.where(private_key: cookies[:test_key]).first
+    @a = TestAttempt.where(private_key: cookies[:test_key]).first
     if @a.completed? || !@a.active?
       redirect_to :results and return
     end
@@ -86,9 +85,13 @@ class TestSessionsController < ApplicationController
   def check_question
     @question = Question.find(params[:question_id])
     answer = params[:answer]
-    assignment = TestStudentAssignment.find_by_key(cookies[:test_key])
-    status = assignment.question_statuses.find(params[:question_status_id])
+    attempt = TestAttempt.find_by_key(cookies[:test_key])
+    status = attempt.question_statuses.find(params[:question_status_id])
     # Если на вопрос уже дан ответ
+    if attempt.completed?
+      render json: {error: "На все вопросы уже были даны ответы"}, status: 421
+      return
+    end
     if status.is_answered
       render json: {error: "Да данный вопрос уже дан ответ"}, status: 420
       return
@@ -101,7 +104,7 @@ class TestSessionsController < ApplicationController
       result = @question.answer == answer ? 1.0 : 0.0
     elsif @question.type == 'multiplechoice'
       answer = (answer || []).uniq
-      if assignment.test_session.use_partially_correct_answers
+      if attempt.test_session.use_partially_correct_answers
         if (answer - @question.answer).count > 0
           result = 0.0
         else
@@ -118,7 +121,7 @@ class TestSessionsController < ApplicationController
       correctness_level: result,
       answered_at: DateTime.now
     })
-    response = { completed: assignment.completed? }
+    response = { completed: attempt.completed? }
     if @session.report_correct_status
       response[:correctness_level] = case result
         when 0.0 then :incorrect
@@ -139,17 +142,17 @@ class TestSessionsController < ApplicationController
   end
 
   def questions_status
-    @assignment = @session.test_student_assignments.where(student_id: params[:student_id]).first
-    @questions = @assignment.question_statuses.includes(:question)
+    @attempt = @session.test_attempts.where(student_id: params[:student_id]).first
+    @questions = @attempt.question_statuses.includes(:question)
     render partial: 'questions_status'
   end
 
   def report
-    @assignment = @session.test_student_assignments.where(student_id: params[:student_id]).first
-    unless @assignment
+    @attempt = @session.test_attempts.where(student_id: params[:student_id]).first
+    unless @attempt
       redirect_to :back and return
     end
-    @questions = @assignment.question_statuses.includes(:question)
+    @questions = @attempt.question_statuses.includes(:question)
     respond_to do |format|
       format.html
       format.pdf { render layout: false }
@@ -157,9 +160,9 @@ class TestSessionsController < ApplicationController
   end
 
   def results
-    @assignment = TestStudentAssignment.find_by_key(cookies[:test_key])
-    if @assignment.active? && !@assignment.completed?
-      redirect_to :go and return
+    @attempt = TestAttempt.find_by_key(cookies[:test_key])
+    if @attempt.active? && !@attempt.completed?
+      redirect_to :start and return
     end
   end
 
@@ -173,10 +176,9 @@ class TestSessionsController < ApplicationController
   def check_private_key
   end
 
-  def check_assignment_is_active
-    redirect_to :root unless cookies[:test_key]
-    unless TestStudentAssignment.find_by_key(cookies[:test_key])
-      redirect_to :root
+  def check_attempt_is_active
+    if cookies[:test_key].nil? || !TestAttempt.find_by_key(cookies[:test_key])
+      redirect_to :root and return
     end
   end
 

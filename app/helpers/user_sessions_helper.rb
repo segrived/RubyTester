@@ -1,7 +1,7 @@
 module UserSessionsHelper
 
   def logged?
-    session[:user_id] != nil && User.where(id: session[:user_id]).exists?
+    session[:user_id] && User.where(id: session[:user_id]).exists?
   end
 
   def logged_user
