@@ -17,16 +17,16 @@
       </div>
       <nav>
         <% if logged? %>
-          <% if logged_user.can? "admin" %>
+          <% if logged_user.can?('admin') %>
             <div class="item"><%= link_to "администрирование", :admin %></a></div>
           <% end %>
-          <% if logged_user.can? "manageTests" %>
+          <% if logged_user.can?('manageTests') || logged_user.can?('useTests') %>
             <div class="item"><%= link_to "тесты", :tests %></div>
           <% end %>
-          <% if logged_user.can? "browseReports" %>
+          <% if logged_user.can?('browseReports') %>
             <div class="item"><%= link_to "отчеты", :reports %></div>
           <% end %>
-          <% if logged_user.can? "manageStudents" %>
+          <% if logged_user.can?('manageStudents') %>
             <div class="item"><%= link_to "группы и студенты", :groups %></div>
           <% end %>
           <div class="item"><%= link_to "выход", :logout %></a></div>

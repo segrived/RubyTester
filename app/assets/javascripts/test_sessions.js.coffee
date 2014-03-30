@@ -26,6 +26,10 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
         when 'incorrect' then ['error', 'Дан неверный ответ']
         when 'partially_correct' then ['success', 'Дан частично верный ответ']
         else ['error', 'Состояние ответа неизвестно']
+      if status.first() == 'success'
+        alertify.success status.last()
+      else
+        alertify.error status.last()
     if d.completed
       window.location.href = Routes.results_path()
       return
@@ -67,7 +71,11 @@ $(document).bind 'watch_test_sessions.load', (e, obj) =>
         status_elem.parent('tr').removeClass().addClass(e.status)
         status_elem.html "#{answered}/#{qs.length}"
         formatted_time = moment().startOf('day').seconds(e.remains_in_sec)
-        stud_elem.children('.state').html e.status
+        state = switch e.status
+          when 'completed' then 'Завершен'
+          when 'out_of_time' then 'Завершен (по времени)'
+          when 'active' then 'В процессе'
+        stud_elem.children('.state').html state
         stud_elem.children('.remains').html formatted_time.format('HH:mm:ss')
         stud_elem.children('.in_percent').html "#{e.in_percent}%"
         stud_elem.children('.answered_percent').html "#{e.answered_percent}%"

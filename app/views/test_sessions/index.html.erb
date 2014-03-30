@@ -7,17 +7,27 @@
 
   <h2>Активные сессии</h2>
   <ul>
-    <% @sessions.active.each do |session| %>
-      <li><%= session.created_at %></li>
+    <% if @sessions.active.count > 0 %>
+      <% @sessions.active.each do |session| %>
+        <li><%= link_to session.created_at, session_watch_path(session) %></li>
+      <% end %>
+    <% else %>
+      <p>Активных сессий не найдено</p>
+    <% end %>
+  </ul>
+  <hr />
+  <h2>Неактивные сессии</h2>
+  <ul>
+    <% if @sessions.inactive.count > 0 %>
+      <% @sessions.inactive.each do |session| %>
+        <li><%= session.created_at %> (истекла <%= session.end_time %>)</li>
+      <% end %>
+      <%= link_to 'Удалить все неактивные сессии', inactive_test_sessions_path(@test),
+        method: 'delete', class: 'btn' %>
+    <% else %>
+      <p>Неактивных сессий не найдено</p>
     <% end %>
   </ul>
 
-  <h2>Неактивные сессии</h2>
-  <ul>
-    <% @sessions.inactive.each do |session| %>
-      <li><%= session.created_at %> (истекла <%= session.end_time %>)</li>
-    <% end %>
-    <%= link_to 'Удалить неактивные сессии', inactive_test_sessions_path(@test),
-      method: 'delete', class: 'btn' %>
-  </ul>
+  <%= link_to '← На страницу тестов', :tests %>
 </section>
