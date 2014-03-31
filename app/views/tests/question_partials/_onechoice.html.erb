@@ -1,0 +1,7 @@
+<% question.variants.each do |(k, v)| %>
+  <div class="field">
+    <%= radio_button_tag :answer, k, question.answer == k %>
+    <%= text_field_tag "variants[#{k}]", v, class: 'width-90p' %>
+  </div>
+<% end %>
+<%= submit_tag %>

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module ApplicationHelper
 
   def error_box(object)
@@ -16,8 +18,15 @@ module ApplicationHelper
     !attempt.completed?
   end
 
-end
+  def tags_list(test)
+    if test.tags.any?
+      test.tags.map {|tag| link_to tag, test_tags_path(tag) }.join(', ').html_safe
+    else
+      "отсутствуют"
+    end
+  end
 
+end
 
 class ActionView::Helpers::FormBuilder
   def errors

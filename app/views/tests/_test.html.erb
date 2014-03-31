@@ -1,13 +1,10 @@
 <div id="test-<%= test.id %>" class="test-item">
   <div class="name">
-    <%= link_to highlight(test.title, params[:search_request], '<b>\1</b>'), edit_test_path(test.id) %>
+    <% repl = '<span class="search-term-highlight">\1</span>' %>
+    <%= link_to highlight(test.title, params[:search_request], repl), edit_test_path(test.id) %>
   </div>
   <div class="info left">
-    <b>Теги: </b>
-    <span>
-      <% to_links = ->(tag) { link_to tag, test_tags_path(tag) } %>
-      <%= test.tags_array.map(&to_links).join(', ').html_safe %>
-    </span>
+    <b>Теги: </b><span><%= tags_list(test) %></span>
   </div>
   <div class="info right">
     <% if test.is_archived %>

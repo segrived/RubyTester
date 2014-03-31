@@ -24,7 +24,7 @@
             <div class="item"><%= link_to "тесты", :tests %></div>
           <% end %>
           <% if logged_user.can?('browseReports') %>
-            <div class="item"><%= link_to "отчеты", :reports %></div>
+            <!-- <div class="item"><%= link_to "отчеты", :reports %></div> -->
           <% end %>
           <% if logged_user.can?('manageStudents') %>
             <div class="item"><%= link_to "группы и студенты", :groups %></div>

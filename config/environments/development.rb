@@ -7,6 +7,6 @@ RubyTester::Application.configure do
   config.active_support.deprecation = :log
   config.action_dispatch.best_standards_support = :builtin
   config.assets.compress = false
-  config.assets.debug = true
+  config.assets.debug = false
   config.serve_static_assets = false
 end

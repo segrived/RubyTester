@@ -9,13 +9,13 @@
         </tr>
       <% end %>
     </table>
-    <div class="clearfix">
-      <p class="right">Студентов в группе: <b><%= @group.students.count %></b></p>
-      <%= link_to "Добавить студента в группу", new_group_student_path(@group), class: 'btn left' %>
-    </div>
   <% else %>
     <div class="message info">В данной группе ещё нет студентов</div>
   <% end %>
+  <div class="clearfix">
+    <p class="right">Студентов в группе: <b><%= @group.students.count %></b></p>
+    <%= link_to "Добавить студента в группу", new_group_student_path(@group), class: 'btn left' %>
+  </div>
 </section>
 
 <%= render partial: 'sidebar' %>

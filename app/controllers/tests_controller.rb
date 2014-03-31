@@ -3,6 +3,7 @@
 class TestsController < ApplicationController
   before_filter { |c| c.check_permissions "manageTests" }
   before_filter :retrieve_top_tags
+  after_filter :clear_tags_cache, only: [:create, :update, :destroy]
 
   respond_to :html, :json
 
@@ -16,7 +17,7 @@ class TestsController < ApplicationController
     end
     # поиск по тегу
     if params.has_key? :tag
-      @tests = @tests.tagged_with(params[:tag])
+      @tests = @tests.in(tags: params[:tag])
     end
     @tests = @tests.paginate(page: params[:page], per_page: 10)
   end
@@ -30,10 +31,10 @@ class TestsController < ApplicationController
   def create
     @test = Test.new(params[:test])
     if @test.save then
-      Rails.cache.delete('top-tags')
-      redirect_to :tests and return
+      redirect_to :tests
+    else
+      render :new
     end
-    render :new
   end
 
   # GET /tests/1/edit
@@ -43,7 +44,6 @@ class TestsController < ApplicationController
 
   # PUT /tests/1
   def update
-    Rails.cache.delete('top-tags')
   end
 
   # POST /tests/1/archive
@@ -61,21 +61,24 @@ class TestsController < ApplicationController
   # DELETE /tests/1
   def destroy
     @test = Test.find(params[:id]).destroy
-    Rails.cache.delete('top-tags')
     redirect_to :tests
   end
 
   # GET /tests/tags
   def tags
-    @tags = Test.tags
+    @tags = Test.distinct(:tags).sort
     render :tags
   end
 
   private
 
+  def clear_tags_cache
+    Rails.cache.delete('top-tags')
+  end
+
   def retrieve_top_tags
     @top_tags = Rails.cache.fetch 'top-tags' do
-      Test.tags_with_weight.sort_by { |x| -x.last }.take(20)
+      Test.top_tags(20)
     end
   end
 end

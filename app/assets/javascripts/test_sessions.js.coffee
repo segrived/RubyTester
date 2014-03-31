@@ -41,7 +41,7 @@ $(document).bind 'start_test_sessions.load', (e, obj) =>
     # Если код сообщение 420 - сообщение нужно скрыть
     if d.status == 420
       $(@).parent('.answer-area').hide 'normal'
-    # Если сообщение 421 - выйди из теста
+    # Если код 421 - выйди из теста
     if d.status == 421
       window.location.href = Routes.results_path()
 

@@ -36,7 +36,12 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    redirect_to :admin_users
+    user = User.find(params[:id])
+    if user.id == logged_user.id
+      render_403
+    else
+      user.destroy
+      redirect_to :admin_users
+    end
   end
 end

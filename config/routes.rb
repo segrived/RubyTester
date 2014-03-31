@@ -48,8 +48,6 @@ RubyTester::Application.routes.draw do
 
   namespace :admin do
     get "/" => "admin#index"
-    get 'maintenance' => 'maintenance#index'
-    post 'maintenance/rebuild_tag_index'
     resources :users
   end
 

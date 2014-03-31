@@ -1,0 +1,7 @@
+<% question.variants.each do |(k, v)| %>
+  <div class="field">
+    <%= check_box_tag :answer, k, question.answer.include?(k) %>
+    <%= text_field_tag "variants[#{k}]", v, class: 'width-90p' %>
+  </div>
+<% end %>
+<%= submit_tag %>
