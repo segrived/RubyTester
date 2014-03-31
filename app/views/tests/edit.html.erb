@@ -2,7 +2,7 @@
   <div class="center-box">
     <h1>Редактирование теста</h1>
     <% @test.questions.each.with_index(1) do |question, iter| %>
-        <%= form_tag test_question_path(@test, question), method: 'put', id: "question-#{iter}", remote: true do %>
+        <%= form_tag test_question_path(@test, question), method: 'put', id: "question-#{iter}", style: 'padding-bottom: 30px', remote: true do %>
           <%= hidden_field_tag :type, question.type %>
           <fieldset style='background-color: #eee;'>
             <legend>Вопрос #<%= iter %></legend>

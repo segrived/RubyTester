@@ -2,7 +2,10 @@
   <h1>Группы</h1>
   <ul class="with-padding">
     <% Group.all.each do |group| %>
-      <li><%= link_to group.name, group_path(group) %></li>
+      <li>
+        <%= link_to group.name, group_path(group) %>
+        <%= link_to "[x]", group_path(group), method: 'delete' %>
+      </li>
     <% end %>
     <hr class="dashed" />
     <li><%= link_to "Добавить группу", :new_group %></li>

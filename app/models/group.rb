@@ -4,7 +4,7 @@ class Group
   include Mongoid::Timestamps
 
   field :name, type: String
-  has_many :students
+  has_many :students, dependent: :delete
 
   index({ name: 1 }, { unique: true })
   slug :name

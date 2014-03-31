@@ -20,7 +20,7 @@
   <ul>
     <% if @sessions.inactive.count > 0 %>
       <% @sessions.inactive.each do |session| %>
-        <li><%= session.created_at %> (истекла <%= session.end_time %>)</li>
+        <li><%= link_to session.created_at, session_watch_path(session) %> (истекла <%= session.end_time %>)</li>
       <% end %>
       <%= link_to 'Удалить все неактивные сессии', inactive_test_sessions_path(@test),
         method: 'delete', class: 'btn' %>

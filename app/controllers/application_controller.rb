@@ -12,13 +12,13 @@ class ApplicationController < ActionController::Base
 
   # === BEFORE FILTERS
   def login_required
-    unless logged? then
+    unless logged?
       redirect_to :login and return
     end
   end
 
   def check_permissions(p)
-    unless (logged? && logged_user.can?(p)) then
+    unless logged? && logged_user.can?(p)
       render_403 and return
     end
   end

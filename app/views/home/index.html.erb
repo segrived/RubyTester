@@ -16,6 +16,9 @@
             </h1>
           </div>
           <div class="right">
+            <% unless session.secret_code.empty? %>
+              <%= image_tag 'unlocked.png', title: 'Сессия защищена паролем' %>
+            <% end %>
             <% if logged? && logged_user.can?('useTests') %>
               <%= link_to image_tag('eye.png'),
                 session_watch_path(session), title: 'Нажмите для наблюдения за состоянием прохождения'

@@ -33,7 +33,7 @@
             <div class="field">
               <%= f.label :secret_code, "Секретный код (пароль) (необязательно)" %>
               <%= f.text_field :secret_code %>
-              <%= link_to_function "Сгенерировать код", :generate_code %>
+              <a id="generate_code">Сгенерировать код</a>
             </div>
             <div class="field">
               <%= f.label :description, "Описание (необязательно)" %>

@@ -82,3 +82,9 @@ $(document).bind 'watch_test_sessions.load', (e, obj) =>
   update_ui()
   setInterval (()-> update_ui()), 5000
   $('#update-information').on 'click', () -> update_ui()
+
+# test_sessions -> new
+$(document).bind 'new_test_sessions.load', (e, obj) =>
+  $('#generate_code').click -> 
+    code = (Math.floor Math.random() * 899999) + 100000
+    $('#test_session_secret_code').val(code)

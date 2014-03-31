@@ -1,6 +1,8 @@
 <section id="content-full">
   <h1>Результаты прохождения теста</h1>
   <div style="margin: 0 auto; text-align: center;">
+    <h2>Студент: <%= @attempt.student %></h2>
+    <h2>Тест: <%= @attempt.test_session.test.title %></h2>
     <div style="font-size: 120px; color: green;"><%= @attempt.in_percent %>%</div>
     <% if (points = @attempt.test_session.max_points) > 0 %>
       <div style="font-size: 70px; color: blue;">

@@ -6,6 +6,7 @@
       <% @group.students.each do |student| %>
         <tr>
           <td><%= student.fullname %></td>
+          <td><%= link_to "Удалить", group_student_path(@group, student), method: 'delete' %></td>
         </tr>
       <% end %>
     </table>
