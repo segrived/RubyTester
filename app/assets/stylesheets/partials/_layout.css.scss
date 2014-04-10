@@ -320,3 +320,59 @@ pre, code {
   font-weight: bold;
   background-color: #F9FFA6;
 }
+
+.active-session-item {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  margin-bottom: 15px;
+}
+
+.edit-test-form {
+  padding-bottom: 20px;
+  fieldset {
+    legend {
+      background-color: #77aabb;
+      color: #fff;
+    }
+    background-color: #99ccdd;
+    input[type='checkbox'] {
+      size: 12px;
+    }
+  }
+}
+
+.report-item {
+  line-height: 60px;
+  .icon {
+    background-image: image-url('pdf_icon.png');
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 38px;
+  }
+}
+
+#simplemodal-overlay {
+  background-color:#fff;
+}
+
+#simplemodal-container {
+  height: 360px;
+  width: 600px;
+  color: #222;
+  background-color: #eee;
+  border: 2px solid #aaa;
+  padding: 12px 12px 40px 12px;
+  a.modal-close, a.modal-close:link, a.modal-close:active, a.modal-close:visited {
+    font-weight: bold;
+    font-size: 14px;
+    position: absolute;
+    text-decoration: none;
+    right: 20px;
+    bottom: 10px;
+    color: #333;
+  }
+  a.modal-close:hover {
+    color: #000;
+  }
+}

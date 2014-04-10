@@ -21,7 +21,7 @@ module RubyTester
     config.assets.enabled = true
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
     config.assets.version = '1.1'
-    # config.autoload_paths += %W(#{config.root}/extras)
+    # config.autoload_paths += %W(#{config.root}/app/reports)
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
     # config.time_zone = 'Central Time (US & Canada)'
   end

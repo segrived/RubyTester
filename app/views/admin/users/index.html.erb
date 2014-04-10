@@ -22,7 +22,7 @@
             <%= link_to "редактировать", edit_admin_user_path(user) %>
           </div>
           <div>
-            <% if logged_user != user %>
+            <% if current_user != user %>
               <%= image_tag 'user_delete.png' %>
               <%= link_to "удалить", admin_user_path(user), method: 'delete', confirm: "Вы действительно хотите удалить данного пользователя?" %>
             <% end %>

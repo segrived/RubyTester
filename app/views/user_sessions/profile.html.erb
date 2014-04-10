@@ -1,0 +1,18 @@
+<h1>Личный кабинет пользователя <%= current_user.fullname || current_user.login %></h1>
+<h2>Установленные разрешения (права доступа)</h2>
+<div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 25px; background-color: #f4f4f4">
+  <% current_user.permissions.each do |p| %>
+    <li><%= t("userPermissions.#{p}") %></li>
+  <% end %>
+</div>
+<h2>Последние проведённые тесты</h2>
+<% @sessions.each do |session| %>
+  <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 25px; background-color: #f4f4f4">
+  <ul>
+    <li><b>Название теста:</b> <%= link_to session.test.title, session_watch_path(session) %></li>
+    <li><b>Тестируемая группа:</b> <%= session.group %></li>
+    <li><b>Дата создания сессии:</b> <%= session.created_at %></li>
+  </ul>
+  </div>
+<% end %>
+</code>

@@ -1,7 +1,10 @@
-<% question.variants.each do |(k, v)| %>
-  <div class="field">
-    <%= radio_button_tag :answer, k, question.answer == k %>
-    <%= text_field_tag "variants[#{k}]", v, class: 'width-90p' %>
-  </div>
-<% end %>
-<%= submit_tag %>
+<div class="question_variants">
+  <% question.variants.each do |(k, v)| %>
+    <div class="field">
+      <%= radio_button_tag 'question[answer]', k, question.answer == k %>
+      <%= text_field_tag "question[variants][#{k}]", v, class: 'width-90p' %>
+      <span class="remove-question-variant mini">[x]</span>
+    </div>
+  <% end %>
+</div>
+<button type="button" class="add-question-variant mini">Добавить вариант ответа</button>

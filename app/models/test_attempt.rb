@@ -32,7 +32,11 @@ class TestAttempt
   end
 
   def answered_count
-    question_statuses.where(is_answered: true).count
+    question_statuses.answered.count
+  end
+
+  def total_count
+    question_statuses.count
   end
 
   def in_percent(only_answered = false)
@@ -44,7 +48,7 @@ class TestAttempt
     return 0.0 if total.zero?
     mul = 100.0 / total
     sum = question_statuses.map(&:correctness_level).inject(&:+)
-    sum * mul
+    (sum * mul).round(2)
   end
 
   def status
@@ -68,7 +72,10 @@ class TestAttempt
   end
 
   def as_json(options = {})
-    super(methods: [:in_percent, :remains_in_sec, :answered_percent, :status])
+    super(
+      only: [:student_id],
+      methods: [:in_percent, :remains_in_sec, :answered_percent, :status, :answered_count, :total_count]
+    )
   end
 
   private

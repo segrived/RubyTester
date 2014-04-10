@@ -13,7 +13,14 @@ bind_js = (controller, action) ->
   $.event.trigger "#{controller}.load"
   $.event.trigger "#{action}_#{controller}.load"
 
+@unique_id = (length = 8) ->
+  id = ""
+  id += Math.random().toString(36).substr(2) while id.length < length
+  id.substr 0, length
+
+
 $(document).on 'ready page:load', ->
+
   bind_js $('body').data('controller'), $('body').data('action')
 
   $('.message').on 'click', ->

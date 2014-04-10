@@ -2,7 +2,7 @@
 
 class UserSessionsController < ApplicationController
 
-  before_filter :login_required, only: [:logout]
+  before_filter :login_required, only: [:profile, :logout]
 
   def login
     if logged?
@@ -21,6 +21,10 @@ class UserSessionsController < ApplicationController
     end
     session[:user_id] = user.id
     redirect_to :root
+  end
+
+  def profile
+    @sessions = TestSession.where(user: current_user).desc(:created_at).limit(10)
   end
 
   def logout

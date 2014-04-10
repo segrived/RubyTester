@@ -1,0 +1,8 @@
+<section id="content-full">
+  <h1>Сохраненные отчеты</h1>
+  <% @reports.each do |report| %>
+    <div class="report-item">
+      <div class="icon"><span><%= link_to report.title, download_report_path(report.id) %></span></div>
+    </div>
+  <% end %>
+</section>

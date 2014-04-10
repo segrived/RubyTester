@@ -1,0 +1,33 @@
+<section id="content-full">
+  <h1>Статистика по тесту «<%= @test.title %>»</h1>
+  <table class="width-600px center-box">
+    <tr>
+      <th>Свойство</th>
+      <th>Значение</th>
+    </tr>
+    <tr>
+      <td>Количество вопросов в тесте</td>
+      <td><%= @test.questions.count %></td>
+    </tr>
+    <tr>
+      <td>Количество проведённых сессий с использованием этого теста</td>
+      <td><%= @test_sessions.count %></td>
+    </tr>
+    <tr>
+      <td>Количество активных на данный момент сессий</td>
+      <td><%= @test_sessions.active.count %></td>
+    </tr>
+    <tr>
+      <td>Количество запусков данного теста (не обязательно оконченных)</td>
+      <td><%= TestAttempt.in(test_session: @test_sessions.to_a).count %></td>
+    </tr>
+    <tr>
+      <td>Среднее количество вопросов на сессию</td>
+      <td><%= @test_sessions.avg(:questions_count).round(2) %></td>
+    </tr>
+    <tr>
+      <td>Среднее время длины сессии на студента (в минутах)</td>
+      <td><%= @test_sessions.avg(:time_per_student).round(2) %></td>
+    </tr>
+  </table>
+</section>

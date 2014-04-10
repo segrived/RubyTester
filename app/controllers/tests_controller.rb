@@ -1,9 +1,11 @@
 #encoding: utf-8
 
 class TestsController < ApplicationController
-  before_filter { |c| c.check_permissions "manageTests" }
+  before_filter -> c { c.check_permissions "manageTests" },
+    only: [:new, :create, :edit, :update, :archive, :stats, :destroy]
   before_filter :retrieve_top_tags
   after_filter :clear_tags_cache, only: [:create, :update, :destroy]
+  before_filter :fetch_test, only: [:edit, :archive, :destroy, :stats]
 
   respond_to :html, :json
 
@@ -39,7 +41,6 @@ class TestsController < ApplicationController
 
   # GET /tests/1/edit
   def edit
-    @test = Test.includes(:questions).find(params[:id])
   end
 
   # PUT /tests/1
@@ -48,7 +49,6 @@ class TestsController < ApplicationController
 
   # POST /tests/1/archive
   def archive
-    @test = Test.find(params[:id])
     @test.update_attributes({is_archived: params[:set_state]})
     redirect_to :tests, notice: "Состояние теста «#{@test.title}» было изменено"
   end
@@ -60,8 +60,7 @@ class TestsController < ApplicationController
 
   # DELETE /tests/1
   def destroy
-    @test = Test.find(params[:id]).destroy
-    redirect_to :tests
+    @test.destroy and redirect_to :tests
   end
 
   # GET /tests/tags
@@ -70,7 +69,15 @@ class TestsController < ApplicationController
     render :tags
   end
 
+  def stats
+    @test_sessions = @test.test_sessions
+  end
+
   private
+
+  def fetch_test
+    @test = Test.find(params[:id])
+  end
 
   def clear_tags_cache
     Rails.cache.delete('top-tags')

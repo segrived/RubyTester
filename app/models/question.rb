@@ -4,7 +4,8 @@ class Question
 
   field :text, type: String
   field :type, type: String
-  field :answers, type: Array
+  field :variants, type: Array
+  field :answer, type: Array
 
   belongs_to :test
 

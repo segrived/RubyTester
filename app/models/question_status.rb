@@ -13,4 +13,8 @@ class QuestionStatus
 
   scope :answered, -> { where(is_answered: true) }
   scope :unanswered,  -> { where(is_answered: false) }
+
+  def correctness_in_percent
+    (correctness_level * 100).round(2)
+  end
 end

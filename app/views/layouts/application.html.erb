@@ -3,10 +3,11 @@
 <html>
 
   <head>
-    <title>RubyHelper</title>
+    <title>RubyTester</title>
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= yield :head_stylesheets %>
     <%= javascript_include_tag 'application' %>
+    <%= favicon_link_tag %>
     <%= csrf_meta_tags %>
   </head>
 
@@ -17,16 +18,17 @@
       </div>
       <nav>
         <% if logged? %>
-          <% if logged_user.can?('admin') %>
-            <div class="item"><%= link_to "администрирование", :admin %></a></div>
+          <div class="item"><%= link_to "мой профиль", :my %></a></div>
+          <% if current_user.can?('admin') %>
+            <div class="item"><%= link_to "пользователи", :admin_users %></a></div>
           <% end %>
-          <% if logged_user.can?('manageTests') || logged_user.can?('useTests') %>
+          <% if current_user.can?('manageTests') || current_user.can?('useTests') %>
             <div class="item"><%= link_to "тесты", :tests %></div>
           <% end %>
-          <% if logged_user.can?('browseReports') %>
-            <!-- <div class="item"><%= link_to "отчеты", :reports %></div> -->
+          <% if current_user.can?('browseReports') %>
+            <div class="item"><%= link_to "отчеты", :reports %></div>
           <% end %>
-          <% if logged_user.can?('manageStudents') %>
+          <% if current_user.can?('manageStudents') %>
             <div class="item"><%= link_to "группы и студенты", :groups %></div>
           <% end %>
           <div class="item"><%= link_to "выход", :logout %></a></div>

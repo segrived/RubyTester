@@ -7,7 +7,7 @@ class TestSessionsController < ApplicationController
   before_filter :fetch_test, only: [:index, :new, :create, :destroy_inactive]
   before_filter :fetch_session, only: [
     :destroy, :assign_student, :check_question,
-    :watch, :report, :questions_status, :full_report, :status]
+    :watch, :report, :questions_status, :generate_report, :status]
   before_filter :check_attempt_is_active, only: [:start, :results]
   before_filter :check_private_key
 
@@ -24,7 +24,7 @@ class TestSessionsController < ApplicationController
   # POST /tests/1/sessions
   def create
     @session = @test.test_sessions.build(params[:test_session])
-    @session.user = logged_user.id
+    @session.user = current_user.id
     if @session.save then
       redirect_to session_watch_path(@session)
     else
@@ -98,10 +98,12 @@ class TestSessionsController < ApplicationController
     end
     # TODO: вынести в более удачное место (!!!)
     if @question.type == 'simple'
-      is_valid = /\A#{@question.answers}\Z/i.nil?
+      is_valid_reg_exp = /\A#{@question.answers}\Z/i.nil?
       result = (answer =~ is_valid) ? 0.0 : 1.0
+      answer_text = answer
     elsif @question.type == 'onechoice'
       result = @question.answer == answer ? 1.0 : 0.0
+      answer_text = @question.variants[answer]
     elsif @question.type == 'multiplechoice'
       answer = (answer || []).uniq
       if attempt.test_session.use_partially_correct_answers
@@ -114,12 +116,14 @@ class TestSessionsController < ApplicationController
       else
         result = (answer.sort == @question.answer.sort) ? 1.0 : 0.0
       end
+      answer_text = answer.map { |a| @question.variants[a] }.join(', ')
     end
     # Обновление статуса вопроса
     status.update_attributes({
       is_answered: true,
       correctness_level: result,
-      answered_at: DateTime.now
+      answered_at: DateTime.now,
+      answer: answer_text
     })
     response = { completed: attempt.completed? }
     if @session.report_correct_status
@@ -133,12 +137,21 @@ class TestSessionsController < ApplicationController
   end
 
   def watch
+    render :watch
   end
 
-  def full_report
-    @questions = @session.test.questions.to_a
-    @students = @session.group.students.to_a
-    render pdf: 'full_report'
+  def generate_report
+    file_name = "#{@session.id}.pdf"
+    path = Rails.root.join("public", "reports", "session", file_name)
+    FileUtils.mkpath(File.dirname(path))
+    report = TestSessionReport.new(path, @session).save!
+    if Report.where(file_name: file_name).exists?
+      report = Report.where(file_name: file_name).first
+    else
+      title = "#{@session.test.title} / #{@session.group} / #{DateTime.now}"
+      report = Report.create(file_name: file_name, type: :session, title: title)
+    end
+    render json: report
   end
 
   def questions_status
@@ -173,12 +186,13 @@ class TestSessionsController < ApplicationController
 
   private
 
+  # ????
   def check_private_key
   end
 
   def check_attempt_is_active
     if cookies[:test_key].nil? || !TestAttempt.find_by_key(cookies[:test_key])
-      redirect_to :root and return
+      redirect_to :root, notice: 'Данный студент уже завершил проходить тест' and return
     end
   end
 

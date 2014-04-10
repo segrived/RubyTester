@@ -1,11 +1,14 @@
 module UserSessionsHelper
 
+  mattr_accessor :current_user, :is_logged
+
   def logged?
-    session[:user_id] && User.where(id: session[:user_id]).exists?
+    self.is_logged
   end
 
-  def logged_user
-    User.find(session[:user_id])
+  def retrieve_current_user
+    self.current_user = User.where(id: session[:user_id]).first
+    self.is_logged = !self.current_user.nil?
   end
 
 end

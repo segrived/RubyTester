@@ -8,6 +8,7 @@ class Student
   slug :fullname
 
   belongs_to :group
+  has_many :test_attemps
 
   default_scope order_by(:fullname.asc)
 

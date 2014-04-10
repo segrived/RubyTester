@@ -9,6 +9,8 @@ class User
   field :permissions, type: Array
   field :fullname, type: String
 
+  has_many :test_sessions
+
   attr_accessor :password, :permissions_hash
 
   # filters

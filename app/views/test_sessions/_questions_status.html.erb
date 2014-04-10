@@ -1,16 +1,19 @@
+<span class="normal"><b><%= @attempt.student %> (<%= @attempt.test_session.group %>)</b></span>
+<hr />
 <% @questions.each do |qs| %>
-  <li>
-    <p><b>Текст вопроса:</b> <%= qs.question.text %></p>
-    <% if qs.is_answered %>
-      <% if qs.correctness_level == 1.0 %>
-        <p class="green">Был дан верный ответ</p>
-      <% elsif qs.correctness_level == 0.0 %>
-        <p class="red">Был дан неверный ответ</p>
-      <% else %>
-        <p class="orange">Был дан частично верный ответ (<%= (qs.correctness_level * 100).round(2) %>%)</p>
-      <% end %>
+  <p><b>Текст вопроса:</b> <%= qs.question.text %></p>
+  <% if qs.is_answered %>
+    <% case qs.correctness_level %>
+    <% when 1.0 %>
+      <p class="green bold">Был дан верный ответ</p>
+    <% when 0.0 %>
+      <p class="red bold">Был дан неверный ответ</p>
     <% else %>
-      <p>На данный вопрос ещё нет ответа</p>
+      <p class="orange bold">Был дан частично верный ответ (<%= qs.correctness_in_percent %>%)</p>
     <% end %>
-  </li>
+    <p><b>Ответил(а): </b><%= qs.answer %></p>
+  <% else %>
+    <p class="blue bold">На данный вопрос ещё нет ответа</p>
+  <% end %>
+  <hr class="dashed" />
 <% end %>

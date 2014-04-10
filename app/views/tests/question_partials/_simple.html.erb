@@ -1,5 +1,4 @@
 <div class="field">
-  <%= label_tag :answer, "Правильный ответ" %>
-  <%= text_field_tag :answer, question.answer, class: 'width-90p' %>
+  <%= label_tag "question[answer]", "Правильный ответ" %>
+  <%= text_field_tag "question[answer]", question.answer, class: 'width-90p' %>
 </div>
-<%= submit_tag %>

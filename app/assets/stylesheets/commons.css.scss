@@ -27,6 +27,10 @@
   cursor: pointer;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 // width classes generator
 @for $i from 1 through 10 {
   .width-#{$i * 10}p {
@@ -60,4 +64,22 @@
 .red { color: red; }
 .green { color: green; }
 .blue { color: blue; }
-.orange { color: orange; }
+.orange { color: #BB5900; }
+
+p, span, div {
+  &.small {
+    font-size: 0.75em;
+  }
+
+  &.normal {
+    font-size: 1em;
+  }
+
+  &.big {
+    font-size: 1.5em;
+  }
+
+  &.huge {
+    font-size: 2em;
+  }
+}

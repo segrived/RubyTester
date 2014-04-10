@@ -1,29 +1,33 @@
 <section id="content">
   <div class="center-box">
     <h1>Редактирование теста</h1>
-    <% @test.questions.each.with_index(1) do |question, iter| %>
-        <%= form_tag test_question_path(@test, question), method: 'put', id: "question-#{iter}", style: 'padding-bottom: 30px', remote: true do %>
-          <%= hidden_field_tag :type, question.type %>
-          <fieldset style='background-color: #eee;'>
-            <legend>Вопрос #<%= iter %></legend>
-            <div class="field">
-              <%= label_tag :text, "Текст вопроса" %> 
-              <%= text_area_tag :text, question.text %>
-            </div>
-            <%= render partial: "tests/question_partials/#{question.type}",
-              locals: {question: question}
-            %>
-          </fieldset>
-        <% end %>
-    <% end %>
+    <%= render partial: 'question', collection: @test.questions %>
+    <div id="variant-type-onechoice" class="empty-variant hidden">
+      <div class="field">
+        <%= radio_button_tag 'question[answer]', -1, false, class: 'dynamic' %>
+        <%= text_field_tag "question[variants][-1]", '', class: 'width-90p dynamic' %>
+        <span class="remove-question-variant mini">[x]</span>
+      </div>
+    </div>
+    <div id="variant-type-multiplechoice" class="empty-variant hidden">
+      <div class="field">
+        <%= check_box_tag 'question[answer][]', -1, false, class: 'dynamic' %>
+        <%= text_field_tag "question[variants][-1]", '', class: 'width-90p dynamic' %>
+        <span class="remove-question-variant mini">[x]</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<aside>
+<aside style="position: fixed;">
   <h1>Список вопросов</h1>
   <ul>
     <% 1.upto(@test.questions.count) do |i| %>
       <li><%= link_to "Вопрос #{i}", "#question-#{i}" %></li>
     <% end %>
   </ul>
+  <hr />
+  <button class="mini" id="add-question-simple">Добавить обычный вопрос</button>
+  <button class="mini" id="add-question-onechoice">Добавить вопрос с одним ответом</button>
+  <button class="mini" id="add-question-multiplechoice">Добавить вопрос с несколькими ответами</button>
 </aside>

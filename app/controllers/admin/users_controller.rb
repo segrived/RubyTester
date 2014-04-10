@@ -37,7 +37,7 @@ class Admin::UsersController < Admin::AdminController
 
   def destroy
     user = User.find(params[:id])
-    if user.id == logged_user.id
+    if user.id == current_user.id
       render_403
     else
       user.destroy

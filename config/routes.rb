@@ -6,10 +6,10 @@ RubyTester::Application.routes.draw do
     resources :sessions, controller: :test_sessions, only: [:new, :create, :destroy, :index] do
       delete 'inactive', action: 'destroy_inactive', on: :collection
     end
-    collection do
-      get 'archived'
-    end
+    
+    get 'archived', on: :collection
     member do
+      get 'stats'
       post 'archive'
       scope 'tags' do
         post 'create', action: :add_tag, as: :add_tag
@@ -29,13 +29,16 @@ RubyTester::Application.routes.draw do
     post ':id/assign_student/:student_id' => 'test_sessions#assign_student', as: :assign_student
     post ':id/check_question' => 'test_sessions#check_question', as: :check_question
     get ':id/watch' => 'test_sessions#watch', as: :session_watch
-    get ':id/full-report' => 'test_sessions#full_report', as: :session_full_report
+    post ':id/report' => 'test_sessions#generate_report', as: :session_generate_report
     get ':id/report/:student_id' => 'test_sessions#report', as: :session_report
     get ':id/q-report/:student_id' => 'test_sessions#questions_status', as: :session_questions_status
     get ':id/status' => 'test_sessions#status', as: :session_status
   end
 
-  resources :reports
+  resources :reports do
+    get 'download', on: :member
+  end
+
   resources :groups do
     resources :students
   end
@@ -43,7 +46,7 @@ RubyTester::Application.routes.draw do
   controller :user_sessions do
     match 'login' => :login, via: [:get, :post]
     get 'logout' => :logout
-    get 'profile' => :profile
+    get 'my' => :profile
   end
 
   namespace :admin do

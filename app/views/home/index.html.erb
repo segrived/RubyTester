@@ -1,49 +1,26 @@
 <section id="content-full">
+  <% if flash[:notice] %>
+    <div class="message info"><%= flash[:notice] %></div>
+  <% end %>
   <% if has_uncompleted_session? %>
-    <p>
-      Другая сессия, начатая на этом компьютере ещё не завершена 
-      (<b><%= active_session.test_session.test.title %></b>).
+    <p class="center-text">
+      <span class="huge">
+        Другая сессия, начатая на этом компьютере ещё не завершена 
+        (<b><%= active_session.test_session.test.title %></b>).
+        <br />
+        <%= link_to "Продолжить", :start %> или
+        <%= link_to "завершить", :end, method: 'get', confirm: "Вы уверены?" %>
+      </span>
     </p>
-    <p><%= link_to "Продолжить", :start %> или <%= link_to "завершить", :end %></p>
   <% else %>
     <h1>Активные сессии</h1>
-    <% @active_sessions.each do |session| %>
-      <div style="padding: 10px; border: 1px solid #ccc; background-color: #eee; margin-bottom: 15px;">
-        <div class="clearfix">
-          <div class="left">
-            <h1>
-              <%= link_to session.test.title, session_register_path(session), title: 'Нажмите для прохождения данного текста' %>
-            </h1>
-          </div>
-          <div class="right">
-            <% unless session.secret_code.empty? %>
-              <%= image_tag 'unlocked.png', title: 'Сессия защищена паролем' %>
-            <% end %>
-            <% if logged? && logged_user.can?('useTests') %>
-              <%= link_to image_tag('eye.png'),
-                session_watch_path(session), title: 'Нажмите для наблюдения за состоянием прохождения'
-              %>
-            <% end %>
-          </div>
-        </div>
-        <div>Преподаватель: <%= session.user.try(:login) || 'неизвестен' %></div>
-        <div>Группа: <%= session.group.try(:name) || 'неизвестна' %></div>
-        <div>Время на прохождение: <%= session.time_per_student %> минут</div>
-        <% if session.max_points > 0 %>
-          <div>Макс. количество баллов за тест: <%= session.max_points %></div>
-        <% end %>
-        <div>
-          Отключение через:
-          <% if session.end_time.nil? %>
-            неограниченно      
-          <% else %>
-           <%= distance_of_time_in_words(session.remains_in_sec) %>
-          <% end %>
-        </div>
-        <% if session.description.present? %>
-          <div>Описание сессии: <%= session.description %></div>
-        <% end %>
-      </div>
+    <% if @active_sessions.count > 0 %>
+      <%= render partial: 'session', collection: @active_sessions, as: :session %>
+    <% else %>
+      <p class="center-text big">В данный момент нет ни одной активной сессии</p>
+    <% end %>
+    <% if logged? && current_user.can?('useTests') %>
+      <p class="center-text big"><%= link_to "Перейти к списку тестов", :tests %></p>
     <% end %>
   <% end %>
 </section>

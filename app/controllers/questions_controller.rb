@@ -3,7 +3,8 @@
 class QuestionsController < ApplicationController
 
   def update
-    render json: params
+    question = Question.find(params[:id])
+    question.update_attributes(params[:question])
   end
 
 end

@@ -8,16 +8,22 @@
   <div class="toolbar clearfix">
     <div class="left">
       <button class="mini" id="update-information">Обновить информацию</button>
-      <%= link_to "Сгенерировать отчет", session_full_report_path(@session), class: 'btn mini' %>
+      <%= link_to "Сгенерировать отчет", session_generate_report_path(@session), method: 'post',
+        class: 'btn mini generate-report-btn', remote: true, disable_with: "Генерирую отчет..."
+      %>
+      <span><a id="download-report-link" class="hidden" title="Теперь отчет можно сохранить"></a></span>
     </div>
     <div class="right">
-      <span>Тест: <b><%= @session.test.title %></b></span>
+      <span>
+        <%= check_box_tag :only_active %>
+        <%= label_tag :only_active, "показывать только активных" %>
+      </span> | 
+      <span>Текущий тест: <b><%= @session.test.title %></b></span>
     </div>
   </div>
   <table id="session-student-status-list">
     <tr>
       <th style="width: 40%;">Полное имя</th>
-      <th></th>
       <th>Состояние</th>
       <th>Отвечено</th>
       <th>Предварительно</th>
@@ -25,19 +31,17 @@
       <th>Осталось</th>
     </tr>
     <% @session.group.students.each do |student| %>
-      <tr class="test-session-student-item" id="student-<%= student.id %>">
-        <td><%= link_to student.fullname, session_report_path(@session, student.id) %></td>
-        <td><%= link_to "\u21E9", session_questions_status_path(@session, student.id), remote: true,
-          class: 'show-status' %></td>
+      <tr class="test-session-student-item inactive" id="student-<%= student.id %>">
+        <td><%= link_to student.fullname, session_questions_status_path(@session, student.id),
+          remote: true, class: 'show-status' %>
+        </td>
         <td class="state">—</td>
         <td class="status">—</td>
         <td class="in_percent">—</td>
         <td class="answered_percent">—</td>
         <td class="remains">—</td>
       </tr>
-      <tr class="student-test-status hidden" id="student-status-<%= student.id %>">
-        <td>Информация загружается...</td>
-      </tr>
     <% end %>
   </table>
+  <div id="modal-info-box"></div>
 </section>

@@ -1,0 +1,13 @@
+<%= form_tag test_question_path(@test, question), method: 'put', class: 'edit-test-form', remote: true do %>
+  <%= hidden_field_tag 'question[type]', question.type %>
+  <fieldset>
+    <legend>Вопрос #<%= question_counter + 1 %></legend>
+    <a name="question-<%= question_counter %>"></a>
+    <div class="field">
+      <%= label_tag 'question[text]', "Текст вопроса" %> 
+      <%= text_area_tag 'question[text]', question.text %>
+    </div>
+    <%= render partial: "tests/question_partials/#{question.type}", locals: {question: question} %>
+    <%= submit_tag "Сохранить изменения" %>
+  </fieldset>
+<% end %>
