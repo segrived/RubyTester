@@ -6,4 +6,5 @@
 /tmp
 /*.sublime-*
 /public/assets/**
+/public/reports/**
 /drafts
