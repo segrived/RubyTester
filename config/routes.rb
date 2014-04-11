@@ -31,7 +31,6 @@ RubyTester::Application.routes.draw do
     get ':id/watch' => 'test_sessions#watch', as: :session_watch
     post ':id/report' => 'test_sessions#generate_report', as: :session_generate_report
     get ':id/report/:student_id' => 'test_sessions#report', as: :session_report
-    get ':id/q-report/:student_id' => 'test_sessions#questions_status', as: :session_questions_status
     get ':id/status' => 'test_sessions#status', as: :session_status
   end
 

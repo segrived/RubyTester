@@ -2,16 +2,21 @@ $(document).bind 'watch_test_sessions.load', (e, obj) =>
   session_id = window.session_id
 
   $('.show-status').on
-    'click': (x) ->
-      info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
-      info_area.show()
+    'click': ->
+      $('#ajax-animation').show()
+    'ajax:complete': ->
+      $('#ajax-animation').hide()
     'ajax:success': (x, d, s) ->
       modal_window(d)
-    'ajax:error': (x) ->
-      info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
-      info_area.html('Не удалось загрузить информацию для данного студента. Возможно данный студент ещё не проходил тестирование')
+    'ajax:error': ->
+      alert 'Не удалось получить информацию. Возможно студент ещё не проходил этот тест'
+
 
   $('.generate-report-btn').on
+    'click': ->
+      $('#ajax-animation').show()
+    'ajax:complete': ->
+      $('#ajax-animation').hide()
     'ajax:success': (x, d, s, e) ->
       alertify.success "Отчет был успешно сохранен либо обновлен"
       link_element = $('#download-report-link')

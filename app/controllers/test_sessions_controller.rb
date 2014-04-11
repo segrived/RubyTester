@@ -155,16 +155,10 @@ class TestSessionsController < ApplicationController
     render json: report
   end
 
-  def questions_status
+  def report
     @attempt = @session.test_attempts.where(student_id: params[:student_id]).first
     @questions = @attempt.question_statuses.includes(:question)
     render partial: 'questions_status'
-  end
-
-  def report
-    @attempt = @session.test_attempts.where(student_id: params[:student_id]).first
-    redirect_to :back and return unless @attempt
-    @questions = @attempt.question_statuses.includes(:question)
   end
 
   def results

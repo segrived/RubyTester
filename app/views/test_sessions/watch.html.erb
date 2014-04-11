@@ -11,6 +11,7 @@
       <%= link_to "Сгенерировать отчет", session_generate_report_path(@session), method: 'post',
         class: 'btn mini generate-report-btn', remote: true, disable_with: "Генерирую отчет..."
       %>
+      <%= image_tag "ajax-loader.gif", id: 'ajax-animation', class: 'hidden' %>
       <span><a id="download-report-link" class="hidden" title="Теперь отчет можно сохранить"></a></span>
     </div>
     <div class="right">
@@ -32,7 +33,7 @@
     </tr>
     <% @session.group.students.each do |student| %>
       <tr class="test-session-student-item inactive" id="student-<%= student.id %>">
-        <td><%= link_to student.fullname, session_questions_status_path(@session, student.id),
+        <td><%= link_to student.fullname, session_report_path(@session, student.id),
           remote: true, class: 'show-status' %>
         </td>
         <td class="state">—</td>
