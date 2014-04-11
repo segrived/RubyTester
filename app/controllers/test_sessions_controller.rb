@@ -9,7 +9,7 @@ class TestSessionsController < ApplicationController
     :destroy, :assign_student, :check_question,
     :watch, :report, :questions_status, :generate_report, :status]
   before_filter :check_attempt_is_active, only: [:start, :results]
-  before_filter :check_private_key
+  # before_filter :check_private_key
 
   # GET /tests/1/sessions
   def index
@@ -87,6 +87,7 @@ class TestSessionsController < ApplicationController
     answer = params[:answer]
     attempt = TestAttempt.find_by_key(cookies[:test_key])
     status = attempt.question_statuses.find(params[:question_status_id])
+    # TODO: это все переписать
     # Если на вопрос уже дан ответ
     if attempt.completed?
       render json: {error: "На все вопросы уже были даны ответы"}, status: 421
@@ -120,10 +121,7 @@ class TestSessionsController < ApplicationController
     end
     # Обновление статуса вопроса
     status.update_attributes({
-      is_answered: true,
-      correctness_level: result,
-      answered_at: DateTime.now,
-      answer: answer_text
+      is_answered: true, correctness_level: result, answered_at: DateTime.now, answer: answer_text
     })
     response = { completed: attempt.completed? }
     if @session.report_correct_status
@@ -141,16 +139,19 @@ class TestSessionsController < ApplicationController
   end
 
   def generate_report
-    file_name = "#{@session.id}.pdf"
-    path = Rails.root.join("public", "reports", "session", file_name)
+    # TODO: перенести всю логику генерации и сохранения отчета в классы генерации PDF
+    filename = "#{@session.id}.pdf"
+    path = Rails.root.join("public", "reports", "session", filename)
     FileUtils.mkpath(File.dirname(path))
-    report = TestSessionReport.new(path, @session).save!
-    if Report.where(file_name: file_name).exists?
-      report = Report.where(file_name: file_name).first
+    TestSessionReport.new(path, @session).save!
+    if Report.where(file_name: filename).exists?
+      report = Report.where(file_name: filename).first
     else
       title = "#{@session.test.title} / #{@session.group} / #{DateTime.now}"
-      report = Report.create(file_name: file_name, type: :session, title: title)
+      report = Report.create(file_name: filename, type: :session, title: title)
     end
+    # Размер файла должен обновляется при каждой генерации
+    report.update_attributes(filesize: File.size(path))
     render json: report
   end
 
@@ -162,14 +163,8 @@ class TestSessionsController < ApplicationController
 
   def report
     @attempt = @session.test_attempts.where(student_id: params[:student_id]).first
-    unless @attempt
-      redirect_to :back and return
-    end
+    redirect_to :back and return unless @attempt
     @questions = @attempt.question_statuses.includes(:question)
-    respond_to do |format|
-      format.html
-      format.pdf { render layout: false }
-    end
   end
 
   def results

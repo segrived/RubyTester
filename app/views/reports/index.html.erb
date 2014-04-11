@@ -1,8 +1,19 @@
 <section id="content-full">
   <h1>Сохраненные отчеты</h1>
+  <% if flash[:notice] %>
+    <div class="message success"><%= flash[:notice] %></div>
+  <% end %>
   <% @reports.each do |report| %>
     <div class="report-item">
-      <div class="icon"><span><%= link_to report.title, download_report_path(report.id) %></span></div>
+      <div class="icon">
+        <span>
+          <% filesize = number_to_human_size(report.filesize || 0) %>
+          <%= link_to report.title, download_report_path(report.id) %> (<%= filesize %>)
+          <%= link_to delete_report_path(report.id), method: 'delete', confirm: 'Вы уверены?' do %>
+            <%= image_tag 'delete_icon.png', title: 'Удалить отчет' %>
+          <% end %>
+        </span>
+      </div>
     </div>
   <% end %>
 </section>

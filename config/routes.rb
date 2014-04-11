@@ -17,7 +17,7 @@ RubyTester::Application.routes.draw do
       end
     end
   end
-
+  
   controller 'test_sessions' do
     get 'start'
     get 'results'
@@ -37,6 +37,7 @@ RubyTester::Application.routes.draw do
 
   resources :reports do
     get 'download', on: :member
+    delete 'delete', on: :member
   end
 
   resources :groups do

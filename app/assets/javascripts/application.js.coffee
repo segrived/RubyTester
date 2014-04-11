@@ -33,7 +33,6 @@ $(document).on 'ready page:load', ->
   alertify.set
     labels: { ok: "Да", cancel : "Отменить" }
     buttonReverse: true
-  hljs.initHighlightingOnLoad()
     
   $.rails.allowAction = (link) ->
     return true unless link.attr('data-confirm')
