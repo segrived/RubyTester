@@ -6,10 +6,7 @@ $(document).bind 'watch_test_sessions.load', (e, obj) =>
       info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
       info_area.show()
     'ajax:success': (x, d, s) ->
-      $.modal("<div>#{d}</div>",
-        overlayClose: true,
-        closeHTML: "<a href='#' title='закрыть' class='modal-close'>закрыть это окно</a>",
-      )
+      modal_window(d)
     'ajax:error': (x) ->
       info_area = $(x.currentTarget).closest('tr').next('.student-test-status')
       info_area.html('Не удалось загрузить информацию для данного студента. Возможно данный студент ещё не проходил тестирование')

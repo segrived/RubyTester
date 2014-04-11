@@ -18,6 +18,10 @@ bind_js = (controller, action) ->
   id += Math.random().toString(36).substr(2) while id.length < length
   id.substr 0, length
 
+@modal_window = (text) ->
+  $.modal("<div>#{text}</div>",
+    overlayClose: true,
+    closeHTML: "<a href='#' title='закрыть' class='modal-close'>закрыть это окно</a>")
 
 $(document).on 'ready page:load', ->
 

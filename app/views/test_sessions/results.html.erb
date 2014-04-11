@@ -9,6 +9,29 @@
         В баллах: <%= (points * @attempt.in_percent / 100).round %>
       </div>
     <% end %>
+    <p>
+      Правильных ответов: <b><%= @valid_c %></b> / Неправильных ответов: <b><%= @invalid_c %></b>
+      <%
+        mode = @attempt.test_session.mark_partially_as_valid ? 'правильные' : 'неправильные'
+        title = "#{@partially_c} частично верных ответов были интерпретировны как #{mode}, следуя настройкам тестирования"
+      %>
+      <span><%= image_tag 'qmark.png', title: title, class: 'pointer' %></span>
+    </p>
+    <%= button_tag "Показать статистику", id: 'show-stats-btn' %>
     <%= link_to "Завершить тест", :end, class: 'btn' %>
+  </div>
+  <div id="stats-container" class="hidden">
+    <table id="stats">
+      <tr>
+        <th width="75%">Номер вопроса</th>
+        <th>Ответ</th>
+      </tr>
+      <% @attempt.question_statuses.each.with_index(1) do |q, i| %>
+        <tr>
+          <td>Вопрос <%= i %></td>
+          <td class="bold"><%= q.correctness_in_percent %>%</td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 </section>

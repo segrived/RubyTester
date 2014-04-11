@@ -177,6 +177,13 @@ class TestSessionsController < ApplicationController
     if @attempt.active? && !@attempt.completed?
       redirect_to :start and return
     end
+    statuses = @attempt.question_statuses
+    @valid_c, @invalid_c, @partially_c = [statuses.correct, statuses.incorrect, statuses.partially_correct].map(&:count)
+    if @attempt.test_session.mark_partially_as_valid
+      @valid_c += @partially_c
+    else
+      @invalid_c += @partially_c
+    end
   end
 
   def end

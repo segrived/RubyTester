@@ -12,6 +12,7 @@ class TestSession
   field :report_correct_status, type: Boolean, default: false
   field :use_partially_correct_answers, type: Boolean, default: true
   field :secret_code, type: String
+  field :mark_partially_as_valid, type: Boolean, default: true
   belongs_to :test
   belongs_to :group
   belongs_to :user

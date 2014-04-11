@@ -5,47 +5,59 @@
       <%= form_for @test_session do |f| %>
         <%= f.errors %>
         <fieldset>
-          <section class="col-1-2">
-            <h2>Обязательные поля</h2>
-            <div class="field">
-              <%= f.label :questions_count, "Количество вопросов (макс: #{@test.questions.count})" %>
-              <%= f.text_field :questions_count, value: @test.questions.count %>
-            </div>
-            <div class="field">
-              <%= f.label :time_per_student, "Время на прохождение (в минутах)" %>
-              <%= f.text_field :time_per_student, value: 20 %>
-            </div>
-            <div class="field">
-              <%= f.label :group_id, "Группа" %>
-              <%= f.collection_select :group_id, Group.all, :id, :name %>
-            </div>
-            <div class="field">
-              <%= f.label :session_length, "Длина сессии (в минутах)" %>
-              <%= f.text_field :session_length, value: 180 %>
+          <div class="clearfix">
+            <section class="col-1-2">
+              <h2>Обязательные поля</h2>
+              <div class="field">
+                <%= f.label :questions_count, "Количество вопросов (макс: #{@test.questions.count})" %>
+                <%= f.text_field :questions_count, value: @test.questions.count %>
+              </div>
+              <div class="field">
+                <%= f.label :time_per_student, "Время на прохождение (в минутах)" %>
+                <%= f.text_field :time_per_student, value: 20 %>
+              </div>
+              <div class="field">
+                <%= f.label :group_id, "Группа" %>
+                <%= f.collection_select :group_id, Group.all, :id, :name %>
+              </div>
+              <div class="field">
+                <%= f.label :session_length, "Длина сессии (в минутах)" %>
+                <%= f.text_field :session_length, value: 180 %>
+              </div>
+            </section>
+            <section class="col-1-2">
+              <h2>Необязательные поля</h2>
+              <div class="field">
+                <%= f.label :secret_code, "Секретный код (пароль) (необязательно)" %>
+                <%= f.text_field :secret_code %>
+                <a id="generate_code">Сгенерировать код</a>
+              </div>
+              <div class="field">
+                <%= f.label :description, "Описание (необязательно)" %>
+                <%= f.text_field :description %>
+              </div>
+              <div class="field">
+                <%= f.label :max_points, "Макс. количество баллов за тест (необязательно)" %>
+                <%= f.text_field :max_points, value: 0 %>
+              </div>
+            </section>
+          </div>
+          <hr />
+          <section class="col-full">
+            <h2>Дополнительные опции</h2>
+            <div class="field inline">
+              <%= f.check_box :use_partially_correct_answers, checked: true %>
+              <%= f.label :use_partially_correct_answers, "Использовать частично правильные ответы" %>
             </div>
             <div class="field inline">
               <%= f.check_box :report_correct_status %>
               <%= f.label :report_correct_status, "Сообщать о правильности ответов" %>
             </div>
-          </section>
-          <section class="col-1-2">
-            <h2>Необязательные поля</h2>
-            <div class="field">
-              <%= f.label :secret_code, "Секретный код (пароль) (необязательно)" %>
-              <%= f.text_field :secret_code %>
-              <a id="generate_code">Сгенерировать код</a>
-            </div>
-            <div class="field">
-              <%= f.label :description, "Описание (необязательно)" %>
-              <%= f.text_field :description %>
-            </div>
-            <div class="field">
-              <%= f.label :max_points, "Макс. количество баллов за тест (необязательно)" %>
-              <%= f.text_field :max_points, value: 0 %>
-            </div>
             <div class="field inline">
-              <%= f.check_box :use_partially_correct_answers, checked: true %>
-              <%= f.label :use_partially_correct_answers, "Использовать частично правильные ответы" %>
+              <%= f.check_box :mark_partially_as_valid, checked: true %>
+              <%= f.label :mark_partially_as_valid,
+                "Интерпретировать частично верные ответы как правильные (только при подсчете количества правильных / неправильных ответов)"
+              %>
             </div>
           </section>
           <%= f.submit "Открыть для тестирования" %>

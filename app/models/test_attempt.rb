@@ -41,14 +41,11 @@ class TestAttempt
 
   def in_percent(only_answered = false)
     statuses = self.question_statuses
-    if only_answered
-      statuses = statuses.answered
-    end
+    statuses = statuses.answered if only_answered
     total = statuses.count
     return 0.0 if total.zero?
-    mul = 100.0 / total
     sum = question_statuses.map(&:correctness_level).inject(&:+)
-    (sum * mul).round(2)
+    (sum * (100.0 / total)).round(2)
   end
 
   def status
