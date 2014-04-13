@@ -71,6 +71,7 @@ class TestsController < ApplicationController
 
   def stats
     @test_sessions = @test.test_sessions
+    render partial: 'stats'
   end
 
   private

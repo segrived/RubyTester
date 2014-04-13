@@ -18,7 +18,7 @@
           нет активных сессий
         <% end %>
       </span> |
-      <%= link_to 'статистика', stats_test_path(test) %> |
+      <%= link_to 'статистика', stats_test_path(test), remote: true, class: 'show-stats' %> |
       <%= link_to 'запустить', new_test_session_path(test) %> |
       <%= link_to 'архивировать', archive_test_path(test, set_state: true), method: 'post' %> | 
     <% end %>
