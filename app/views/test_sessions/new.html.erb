@@ -1,4 +1,4 @@
-<% if @test.questions.count > 0 %>
+<% if @questions_count > 0 %>
   <section id="content-full">
     <h1>Параметры тестирования</h1>
     <div class="center-box">
@@ -7,18 +7,27 @@
         <fieldset>
           <div class="clearfix">
             <section class="col-1-2">
-              <h2>Обязательные поля</h2>
               <div class="field">
-                <%= f.label :questions_count, "Количество вопросов (макс: #{@test.questions.count})" %>
-                <%= f.text_field :questions_count, value: @test.questions.count %>
+                <%= f.label :questions_count, "Количество вопросов (макс: #{@questions_count})" %>
+                <%= f.text_field :questions_count, value: @questions_count %>
               </div>
               <div class="field">
                 <%= f.label :time_per_student, "Время на прохождение (в минутах)" %>
                 <%= f.text_field :time_per_student, value: 20 %>
               </div>
               <div class="field">
-                <%= f.label :group_id, "Группа" %>
-                <%= f.collection_select :group_id, Group.all, :id, :name %>
+                <%= f.label nil, "Группы" %>
+                <div id="test-session-group-fields">
+                  <%= f.fields_for :groups_array do |grf| %>
+                    <div class="test-session-group-field">
+                      <%= grf.collection_select nil, Group.all, :id, :name, {},
+                        {id: :test_session_group, class: 'width-95p' }
+                      %>
+                      <span class="remove-group-select pointer">[x]</span>
+                    </div>
+                  <% end %>
+                </div>
+                <span class="link dashed" id="add_group_field">Добавить группу</span>
               </div>
               <div class="field">
                 <%= f.label :session_length, "Длина сессии (в минутах)" %>
@@ -26,11 +35,10 @@
               </div>
             </section>
             <section class="col-1-2">
-              <h2>Необязательные поля</h2>
               <div class="field">
                 <%= f.label :secret_code, "Секретный код (пароль) (необязательно)" %>
                 <%= f.text_field :secret_code %>
-                <a id="generate_code">Сгенерировать код</a>
+                <span class="link dashed" id="generate_code">Сгенерировать код</span>
               </div>
               <div class="field">
                 <%= f.label :description, "Описание (необязательно)" %>
@@ -44,7 +52,6 @@
           </div>
           <hr />
           <section class="col-full">
-            <h2>Дополнительные опции</h2>
             <div class="field inline">
               <%= f.check_box :use_partially_correct_answers, checked: true %>
               <%= f.label :use_partially_correct_answers, "Использовать частично правильные ответы" %>

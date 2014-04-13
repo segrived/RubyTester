@@ -1,5 +1,8 @@
 <h1>Укажите свою фамилию</h1>
-<% @session.group.students.each do |student| %>
-  <% link = assign_student_path(@session, student.id) %>
-  <h4><%= link_to student.fullname, link, method: 'post' %></h4>
+<% @session.groups.each do |group| %>
+  <h2><%= group %></h2>
+  <% group.students.each do |student| %>
+    <% link = assign_student_path(@session, student.id) %>
+    <h4><%= link_to student.fullname, link, method: 'post' %></h4>
+  <% end %>
 <% end %>

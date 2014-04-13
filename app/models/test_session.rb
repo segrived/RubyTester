@@ -13,13 +13,18 @@ class TestSession
   field :use_partially_correct_answers, type: Boolean, default: true
   field :secret_code, type: String
   field :mark_partially_as_valid, type: Boolean, default: true
+  field :groups_array, type: Array
+
+  def groups
+    Group.where(:id.in => groups_array)
+  end
+
   belongs_to :test
-  belongs_to :group
   belongs_to :user
   has_many :test_attempts, dependent: :delete
   
   # Активной считается та сессия, которая ещё не окончена, либо не имеет даты завершения
-  scope :active, -> { any_of({:end_time.gt => Time.now}, {:end_time => nil}) }
+  scope :active, -> { any_of({ :end_time.gt => Time.now }, { :end_time => nil }) }
   scope :inactive, -> { where(:end_time.lte => Time.now) }
 
   attr_accessor :session_length

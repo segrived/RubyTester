@@ -1,4 +1,4 @@
-<span class="normal"><b><%= @attempt.student %> (<%= @attempt.test_session.group %>)</b></span>
+<span class="normal"><b><%= @attempt.student %> (<%= @attempt.student.group %>)</b></span>
 <hr />
 <% @questions.each do |qs| %>
   <p><b>Текст вопроса:</b> <%= qs.question.text %></p>

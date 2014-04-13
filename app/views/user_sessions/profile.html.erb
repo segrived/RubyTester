@@ -10,7 +10,7 @@
   <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 25px; background-color: #f4f4f4">
   <ul>
     <li><b>Название теста:</b> <%= link_to session.test.title, session_watch_path(session) %></li>
-    <li><b>Тестируемая группа:</b> <%= session.group %></li>
+    <li><b>Тестируемая группа:</b> <%= session.groups.join(', ') %></li>
     <li><b>Дата создания сессии:</b> <%= session.created_at %></li>
   </ul>
   </div>

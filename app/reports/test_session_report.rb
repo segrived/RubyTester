@@ -8,7 +8,7 @@ class TestSessionReport < BaseReport
     super(file_name)
     self.session = session
     @questions = @session.test.questions.to_a
-    @students = @session.group.students.to_a
+    @attempts = @session.test_attempts.includes(:student)
   end
 
   protected
@@ -20,8 +20,9 @@ class TestSessionReport < BaseReport
     @pdf.move_down 10
     @pdf.text "Список студентов, проходивших тест", size: 14, color: '222222'
     @pdf.move_down 10
-    @session.test_attempts.each do |a|
-      bullet_item "<link anchor='#{a.id}'>#{a.student.fullname}</link>", 1, inline_format: true, color: '555555'
+    @attempts.each do |a|
+      item = "<link anchor='#{a.id}'>#{a.student.fullname} (#{a.student.group})</link>"
+      bullet_item item, 1, inline_format: true, color: '555555'
     end
     render_per_student
   end
@@ -29,7 +30,7 @@ class TestSessionReport < BaseReport
   private
 
   def render_per_student
-    @session.test_attempts.each do |attempt|
+    @attempts.each do |attempt|
       @pdf.start_new_page
       @pdf.add_dest(attempt.id, @pdf.dest_fit)
       @pdf.text attempt.student.fullname

@@ -31,18 +31,22 @@
       <th>Текущий</th>
       <th>Осталось</th>
     </tr>
-    <% @session.group.students.each do |student| %>
-      <tr class="test-session-student-item inactive" id="student-<%= student.id %>">
-        <td><%= link_to student.fullname, session_report_path(@session, student.id),
-          remote: true, class: 'show-status' %>
-        </td>
-        <td class="state">—</td>
-        <td class="status">—</td>
-        <td class="in_percent">—</td>
-        <td class="answered_percent">—</td>
-        <td class="remains">—</td>
-      </tr>
+    <% @session.groups.each do |group| %>
+      <tr><th class="center-text" colspan="100"><%= group %></th></tr>
+      <% group.students.each do |student| %>
+        <tr class="test-session-student-item inactive" id="student-<%= student.id %>">
+          <td><%= link_to student.fullname, session_report_path(@session, student.id),
+            remote: true, class: 'show-status' %>
+          </td>
+          <td class="state">—</td>
+          <td class="status">—</td>
+          <td class="in_percent">—</td>
+          <td class="answered_percent">—</td>
+          <td class="remains">—</td>
+        </tr>
+      <% end %>
     <% end %>
+
   </table>
   <div id="modal-info-box"></div>
 </section>

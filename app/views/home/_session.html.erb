@@ -14,7 +14,7 @@
   </div>
   <% user = session.user %>
   <div>Преподаватель: <%= user.try(:fullname) || user.try(:login) || 'неизвестен' %></div>
-  <div>Группа: <%= session.group.try(:name) || 'неизвестна' %></div>
+  <div>Группы: <%= session.groups.join(', ') || 'неизвестны' %></div>
   <div>Время на прохождение: <%= session.time_per_student %> минут</div>
   <% if session.max_points > 0 %>
     <div>Макс. количество баллов за тест: <%= session.max_points %></div>

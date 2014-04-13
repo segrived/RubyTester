@@ -32,9 +32,9 @@
 }
 
 // width classes generator
-@for $i from 1 through 10 {
-  .width-#{$i * 10}p {
-    width: $i * 10% !important;
+@for $i from 1 through 20 {
+  .width-#{$i * 5}p {
+    width: $i * 5% !important;
   }
 }
 

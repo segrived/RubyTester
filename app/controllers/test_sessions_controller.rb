@@ -19,11 +19,14 @@ class TestSessionsController < ApplicationController
   # GET /tests/1/sessions/new
   def new
     @test_session = TestSession.new
+    @questions_count = @test.questions.count
   end
 
   # POST /tests/1/sessions
   def create
     @session = @test.test_sessions.build(params[:test_session])
+    # Только уникальные группы
+    @session.groups.uniq!
     @session.user = current_user.id
     if @session.save then
       redirect_to session_watch_path(@session)
@@ -147,7 +150,7 @@ class TestSessionsController < ApplicationController
     if Report.where(file_name: filename).exists?
       report = Report.where(file_name: filename).first
     else
-      title = "#{@session.test.title} / #{@session.group} / #{DateTime.now}"
+      title = "#{@session.test.title} / #{@session.groups.join(', ')} / #{DateTime.now}"
       report = Report.create(file_name: filename, type: :session, title: title)
     end
     # Размер файла должен обновляется при каждой генерации
