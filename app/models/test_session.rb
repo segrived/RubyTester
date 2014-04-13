@@ -9,6 +9,7 @@ class TestSession
   field :max_points, type: Integer
   field :time_per_student, type: Integer
   field :end_time, type: DateTime
+  field :is_closed, type: Boolean, default: false
   field :report_correct_status, type: Boolean, default: false
   field :use_partially_correct_answers, type: Boolean, default: true
   field :secret_code, type: String
@@ -24,8 +25,8 @@ class TestSession
   has_many :test_attempts, dependent: :delete
   
   # Активной считается та сессия, которая ещё не окончена, либо не имеет даты завершения
-  scope :active, -> { any_of({ :end_time.gt => Time.now }, { :end_time => nil }) }
-  scope :inactive, -> { where(:end_time.lte => Time.now) }
+  scope :active, -> { any_of({ :end_time.gt => Time.now }, { :end_time => nil }).and(is_closed: false) }
+  scope :inactive, -> { any_of({ :end_time.lte => Time.now }, { is_closed: true }) }
 
   attr_accessor :session_length
 
@@ -36,7 +37,7 @@ class TestSession
   validates :questions_count,
     numericality: { greater_than: 0, less_than_or_equal_to: :total_questions_count },
     presence: true
-  validates :session_length, numericality: { greater_than_or_equal_to: 0 }
+  validates :session_length, numericality: { greater_than_or_equal_to: 0 }, on: :create
   validates :time_per_student, numericality: { greater_than: 0 }
   validates :max_points, numericality: { greater_than_or_equal_to: 0 }
   validate :check_test_archived_state

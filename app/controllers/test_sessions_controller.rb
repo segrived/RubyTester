@@ -3,10 +3,10 @@
 class TestSessionsController < ApplicationController
 
   before_filter -> c { c.check_permissions "useTests" },
-    only: [:new, :create, :destroy, :watch, :report, :status]
+    only: [:new, :create, :destroy, :watch, :report, :status, :close]
   before_filter :fetch_test, only: [:index, :new, :create, :destroy_inactive]
   before_filter :fetch_session, only: [
-    :destroy, :assign_student, :check_question,
+    :destroy, :assign_student, :check_question, :close,
     :watch, :report, :questions_status, :generate_report, :status]
   before_filter :check_attempt_is_active, only: [:start, :results]
   # before_filter :check_private_key
@@ -18,7 +18,7 @@ class TestSessionsController < ApplicationController
 
   # GET /tests/1/sessions/new
   def new
-    @test_session = TestSession.new
+    @session = TestSession.new
     @questions_count = @test.questions.count
   end
 
@@ -28,6 +28,7 @@ class TestSessionsController < ApplicationController
     # Только уникальные группы
     @session.groups.uniq!
     @session.user = current_user.id
+    @questions_count = @test.questions.count
     if @session.save then
       redirect_to session_watch_path(@session)
     else
@@ -176,6 +177,11 @@ class TestSessionsController < ApplicationController
     else
       @invalid_c += @partially_c
     end
+  end
+
+  def close
+    @session.update_attributes(is_closed: true)
+    redirect_to :back
   end
 
   def end

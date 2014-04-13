@@ -32,6 +32,7 @@ RubyTester::Application.routes.draw do
     post ':id/report' => 'test_sessions#generate_report', as: :session_generate_report
     get ':id/report/:student_id' => 'test_sessions#report', as: :session_report
     get ':id/status' => 'test_sessions#status', as: :session_status
+    post ':id/close' => 'test_sessions#close', as: :session_close
   end
 
   resources :reports do

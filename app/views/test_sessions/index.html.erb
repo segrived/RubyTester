@@ -9,7 +9,7 @@
   <ul>
     <% if @sessions.active.count > 0 %>
       <% @sessions.active.each do |session| %>
-        <% link_text = "#{session.created_at} для группы #{session.group}" %>
+        <% link_text = "#{session.created_at} для групп: #{session.groups.join(', ')}" %>
         <li><%= link_to link_text, session_watch_path(session) %></li>
       <% end %>
     <% else %>
@@ -21,7 +21,7 @@
   <ul>
     <% if @sessions.inactive.count > 0 %>
       <% @sessions.inactive.each do |session| %>
-        <% link_text = "#{session.created_at} для группы #{session.group}" %>
+        <% link_text = "#{session.created_at} для группы #{session.groups.join(', ')}" %>
         <li><%= link_to link_text, session_watch_path(session) %> (истекла <%= session.end_time %>)</li>
       <% end %>
       <%= link_to 'Удалить все неактивные сессии', inactive_test_sessions_path(@test),
