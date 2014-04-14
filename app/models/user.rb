@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class User
   include Mongoid::Document
   include Mongoid::Slug
@@ -34,6 +36,7 @@ class User
 
   validates :login, presence: true,
     length: { minimum: 2 }, format: { with: /\A[a-z0-9_]+\Z/i }, uniqueness: true
+  validates :password, presence: true, length: { minimum: 5 }
   validates :permissions, enum: { presence: true, inclusion: { in: PERMISSIONS } }
 
   def self.authenticate(login, password)

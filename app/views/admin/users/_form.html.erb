@@ -1,0 +1,51 @@
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.errors %>
+  <fieldset>
+    <div class="field">
+      <%= f.label :login, "Логин" %>
+      <%= f.text_field :login %>
+    </div>
+    <div class="field">
+      <%= f.label :password, "Пароль" %>
+      <%= f.text_field :password %>
+    </div>
+    <div class="field">
+      <%= f.label :fullname, "ФИО пользователя" %>
+      <%= f.text_field :fullname %>
+      <span class="hint">* рекомендуется указывать для удобства студентов</span>
+    </div>
+    <div class="field">
+      <fieldset class="inline-labels">
+        <legend>Права доступа</legend>
+        <%= fields_for 'user[permissions_hash]' do |p| %>
+          <div class="field">
+            <% canLoginDef = @user.new_record? ? true : @user.can?("login") %>
+            <%= p.check_box :canLogin, checked: canLoginDef %>
+            <%= p.label :canLogin, "Может входить в систему" %>
+          </div>
+          <div class="field">
+            <%= p.check_box :canAdmin, checked: @user.can?("admin") %>
+            <%= p.label :canAdmin, "Может администрировать систему" %>
+          </div>
+          <div class="field">
+            <%= p.check_box :canManageTests, checked: @user.can?("manageTests") %>
+            <%= p.label :canManageTests, "Может создавать и редактировать тесты" %>
+          </div>
+          <div class="field">
+            <%= p.check_box :canUseTests, checked: @user.can?("useTests") %>
+            <%= p.label :canUseTests, "Может тестировать студентов" %>
+          </div>
+          <div class="field">
+            <%= p.check_box :canBrowseReports, checked: @user.can?("browseReports") %>
+            <%= p.label :canBrowseReports, "Может просматривать все отчеты" %>
+          </div>
+          <div class="field last">
+            <%= p.check_box :canManageStudents, checked: @user.can?("manageStudents") %>
+            <%= p.label :canManageStudents, "Может управлять группами и студентами" %>
+          </div>
+        <% end %>
+      </fieldset>
+    </div>
+    <%= f.submit @user.new_record? ? "Создать пользователя" : "Сохранить изменения" %>
+  </fieldset>
+<% end %>
