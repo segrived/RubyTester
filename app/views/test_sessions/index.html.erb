@@ -22,7 +22,8 @@
     <% if @sessions.inactive.count > 0 %>
       <% @sessions.inactive.each do |session| %>
         <% link_text = "#{session.created_at} для группы #{session.groups.join(', ')}" %>
-        <li><%= link_to link_text, session_watch_path(session) %> (истекла <%= session.end_time %>)</li>
+        <% additional_info = session.is_closed ? 'завершена досрочно' : "истекла #{session.end_time}" %>
+        <li><%= link_to link_text, session_watch_path(session) %> (<%= additional_info %>)</li>
       <% end %>
       <%= link_to 'Удалить все неактивные сессии', inactive_test_sessions_path(@test),
         method: 'delete', class: 'btn' %>

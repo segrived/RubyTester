@@ -31,7 +31,14 @@
               </div>
               <div class="field">
                 <%= f.label :session_length, "Длина сессии (в минутах)" %>
-                <%= f.text_field :session_length, value: 180 %>
+                <% options = [
+                  ['30 минут', 30], ['1 час', 60], ['3 часа', 180],
+                  ['6 часов', 360], ['1 сутки', 1440], ['1 неделя', 10080],
+                  ['2 недели', 20160], ['30 дней (месяц)', 43200], ['неограниченно', 0],
+                  ['указать время', :user_defined]
+                ] %>
+                <%= f.select :session_length, options_for_select(options) %>
+                <span class="hint">* сессию всегда можно будет закрыть досрочно</span>
               </div>
             </section>
             <section class="col-1-2">

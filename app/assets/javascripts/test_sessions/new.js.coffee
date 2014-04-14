@@ -12,3 +12,13 @@ $(document).bind 'new_test_sessions.load', (e, obj) =>
       $(@).parent('.test-session-group-field').remove()
     else
       alertify.error "Нельзя удалить последнюю группу"
+  $('#test_session_session_length').change ->
+    if @value == 'user_defined'
+      alertify.prompt "Введите время в минутах", (e, str)->
+        if e
+          $('#user_defined_field').remove()
+          element = $("<option></option>").attr({
+            value: str, id: "user_defined_field"
+          }).text("* #{str} минут")
+          $('#test_session_session_length option:last').before(element)
+          $('#test_session_session_length').val(str)

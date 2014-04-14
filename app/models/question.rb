@@ -9,6 +9,7 @@ class Question
 
   belongs_to :test
 
+  # Возвращает count случайных воросов из теста test
   def self.get_random_ids(test, count)
     Question.where(test: test).only(:_id).shuffle.take(count).map(&:_id)
   end

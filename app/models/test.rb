@@ -8,13 +8,14 @@ class Test
   field :description, type: String
   field :is_archived, type: Boolean, default: false
   field :tags, type: Array
+  index({ title: 1 })
   index({ tags: 1 })
 
   has_many :questions, dependent: :delete
   has_many :test_sessions, dependent: :delete
 
-  scope :archived, ->() { where(is_archived: true) }
-  scope :unarchived, ->() { where(is_archived: false) }
+  scope :archived, -> { where(is_archived: true) }
+  scope :unarchived, -> { where(is_archived: false) }
 
   validates :title, presence: true, length: { minimum: 2 }
   before_save :process_tags
