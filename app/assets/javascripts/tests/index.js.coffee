@@ -4,3 +4,6 @@ $(document).bind 'index_tests.load', (e,obj) =>
   $('.show-stats').on
     'ajax:success': (x, d, s, e) ->
       modal_window(d)
+  $('.show-sessions-link').on
+    'ajax:success': (x, d, s, e) ->
+      modal_window(d)

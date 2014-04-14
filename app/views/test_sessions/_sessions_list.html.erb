@@ -1,0 +1,34 @@
+<h2>Активные сессии</h2>
+<% if @sessions.active.count > 0 %>
+  <% @sessions.active.each do |session| %>
+    <% link_text = "#{session.created_at} для групп: #{session.groups.join(', ')}" %>
+    <div>
+      <%= link_to "Сессия от #{session.created_at}", session_watch_path(session), class: 'bold' %>
+      <div style="font-size: 11px"><b>Группы</b>: <%= session.groups.join(', ') %></div>
+      <div style="font-size: 11px"><b>Дата завершения сессии</b>: <%= session.end_time %></div>
+    </div>
+    <hr class="dashed">
+  <% end %>
+<% else %>
+  <p>Активных сессий не найдено</p>
+<% end %>
+
+<h2>Неактивные сессии</h2>
+<% if @sessions.inactive.count > 0 %>
+  <% @sessions.inactive.each do |session| %>
+    <% link_text = "#{session.created_at} #{session.groups.join(', ')}" %>
+    <% additional_info = session.is_closed ? 'завершена досрочно' : "истекла #{session.end_time}" %>
+    <div>
+      <%= link_to "Сессия от #{session.created_at}", session_watch_path(session), class: 'bold' %>
+      <div style="font-size: 11px"><b>Группы</b>: <%= session.groups.join(', ') %></div>
+      <div style="font-size: 11px"><b>Причина завершения</b>: <%= additional_info %></div>
+    </div>
+    <hr class="dashed">
+  <% end %>
+<% else %>
+  <p>Неактивных сессий не найдено</p>
+<% end %>
+
+<% if @is_xhr %>
+    <%= link_to 'Показать на отдельной странице', :test_sessions, class: 'right btn mini' %>
+<% end %>

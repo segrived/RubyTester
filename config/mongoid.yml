@@ -12,6 +12,7 @@ development: &defaults
     include_root_in_json: false
     include_type_for_serialization: false
     preload_models: true
+    use_utc: false
     use_activesupport_time_zone: true
     # protect_sensitive_fields: true
     # use_utc: false

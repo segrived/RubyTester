@@ -6,6 +6,7 @@
       <li><%= t("userPermissions.#{p}") %></li>
     <% end %>
   </div>
+  <%= link_to '<- назад к списку пользователей', :admin_users %>
 </section>
 
 <%= render partial: 'admin/sidebar' %>

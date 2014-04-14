@@ -3,7 +3,7 @@
     <div class="field">
       <%= check_box_tag 'question[answer][]', k, question.answer.include?(k) %>
       <%= text_field_tag "question[variants][#{k}]", v, class: 'width-90p' %>
-      <span class="remove-question-variant mini">[x]</span>
+      <%= image_tag 'delete_icon.png', class: 'remove-question-variant pointer' %>
     </div>
   <% end %>
 </div>

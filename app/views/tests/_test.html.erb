@@ -10,14 +10,14 @@
     <% if test.is_archived %>
       <%= link_to "разархивировать", archive_test_path(test, set_state: false), method: 'post' %> |
     <% else %>
-      <span class="show-active-sessions link">
+      <%= link_to test_sessions_path(test), class: 'show-sessions-link', remote: true do %>
         <% active_sessions = test.test_sessions.active.to_a %>
         <% if active_sessions.count > 0 %>
           активных сессий: <b><%= active_sessions.count %></b>
         <% else %>
           нет активных сессий
         <% end %>
-      </span> |
+      <% end %> |
       <%= link_to 'редактировать', edit_test_path(test) %> |
       <%= link_to 'запустить', new_test_session_path(test) %> |
       <%= link_to 'статистика', stats_test_path(test), remote: true, class: 'show-stats' %> |
@@ -27,15 +27,5 @@
   </div>
   <% unless test.is_archived %>
     <div class="clearfix"></div>
-    <ul class="test-session-list hidden">
-      <% active_sessions.each do |session| %>
-        <li>
-          Время создания сессии: 
-          <%= link_to session.created_at, session_watch_path(session) %>
-          <%= link_to "[x]", test_session_path(test, session), method: 'delete' %>
-        </li>
-      <% end %>
-      <div><%= link_to "Показать все сессии, включая неактивные", test_sessions_path(test) %></div>
-    </ul>
   <% end %>
 </div>

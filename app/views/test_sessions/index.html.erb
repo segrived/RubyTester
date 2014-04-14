@@ -5,32 +5,10 @@
     <div class="message success"><%= flash[:notice] %></div>
   <% end %>
 
-  <h2>Активные сессии</h2>
-  <ul>
-    <% if @sessions.active.count > 0 %>
-      <% @sessions.active.each do |session| %>
-        <% link_text = "#{session.created_at} для групп: #{session.groups.join(', ')}" %>
-        <li><%= link_to link_text, session_watch_path(session) %></li>
-      <% end %>
-    <% else %>
-      <p>Активных сессий не найдено</p>
-    <% end %>
-  </ul>
-  <hr />
-  <h2>Неактивные сессии</h2>
-  <ul>
-    <% if @sessions.inactive.count > 0 %>
-      <% @sessions.inactive.each do |session| %>
-        <% link_text = "#{session.created_at} для группы #{session.groups.join(', ')}" %>
-        <% additional_info = session.is_closed ? 'завершена досрочно' : "истекла #{session.end_time}" %>
-        <li><%= link_to link_text, session_watch_path(session) %> (<%= additional_info %>)</li>
-      <% end %>
-      <%= link_to 'Удалить все неактивные сессии', inactive_test_sessions_path(@test),
-        method: 'delete', class: 'btn' %>
-    <% else %>
-      <p>Неактивных сессий не найдено</p>
-    <% end %>
-  </ul>
+  <%= render partial: 'sessions_list' %>
 
-  <%= link_to '← На страницу тестов', :tests %>
+  <%= link_to '← На страницу тестов', :tests %> |
+  <%= link_to 'Удалить все неактивные сессии', inactive_test_sessions_path(@test),
+    method: 'delete', confirm: 'Вы уверены?'
+  %>
 </section>

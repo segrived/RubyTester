@@ -7,7 +7,9 @@
       <%= label_tag 'question[text]', "Текст вопроса" %> 
       <%= text_area_tag 'question[text]', question.text %>
     </div>
-    <%= render partial: "tests/question_partials/#{question.type}", locals: {question: question} %>
+    <%= render partial: "tests/question_partials/#{question.type}",
+      locals: { question: question }
+    %>
     <%= submit_tag "Сохранить изменения" %>
   </fieldset>
 <% end %>

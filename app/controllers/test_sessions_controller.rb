@@ -14,6 +14,11 @@ class TestSessionsController < ApplicationController
   # GET /tests/1/sessions
   def index
     @sessions = @test.test_sessions
+    if @is_xhr = request.xhr?
+      render partial: 'sessions_list'
+    else
+      render :index
+    end
   end
 
   # GET /tests/1/sessions/new
