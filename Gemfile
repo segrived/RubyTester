@@ -24,6 +24,10 @@ gem 'js-routes', '~> 0.9.7'
 gem 'prawn', '~> 1.0.0'
 gem 'prawn_rails', '~> 0.0.11'
 
+group :development, :test do
+    gem 'railroady'
+end
+
 # group :development do
 #   gem 'rails-dev-tweaks'
 # end

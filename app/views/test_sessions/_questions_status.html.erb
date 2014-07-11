@@ -12,6 +12,7 @@
       <p class="orange bold">Был дан частично верный ответ (<%= qs.correctness_in_percent %>%)</p>
     <% end %>
     <p><b>Ответил(а): </b><%= qs.answer %></p>
+    <p><b>Правильный ответ: </b><%= qs.question.answer_as_text %></p>
   <% else %>
     <p class="blue bold">На данный вопрос ещё нет ответа</p>
   <% end %>
